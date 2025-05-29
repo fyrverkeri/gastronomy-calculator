@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cooking EXP Optimized Calculator</title>
+<style>
+  body { font-family: 'Quicksand', sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+  label { display: block; margin: 1rem 0 0.5rem; }
+  select, input { width: 100%; padding: 0.5rem; font-size: 1rem; }
+  button { margin-top: 1rem; padding: 0.7rem; font-size: 1rem; width: 100%; cursor: pointer; }
+  #result { margin-top: 1.5rem; font-weight: bold; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+
+<h1>Cooking EXP Optimized Calculator</h1>
+
+<label for="currentLevel">Current Level</label>
+<select id="currentLevel"></select>
+
+<label for="targetLevel">Target Level</label>
+<select id="targetLevel"></select>
+
+<label for="progress">Progress into Current Level (EXP)</label>
+<input type="number" id="progress" min="0" value="0" />
+
+<label for="talentLevel">Faster Than Flame Talent Level</label>
+<select id="talentLevel">
+  <option value="0">0 (None)</option>
+  <option value="1">1 (5% faster)</option>
+  <option value="2">2 (10% faster)</option>
+  <option value="3">3 (15% faster)</option>
+  <option value="4">4 (20% faster)</option>
+  <option value="5">5 (25% faster)</option>
+</select>
+
+<label for="delegatoLevel">The Delegato Talent Level</label>
+<select id="delegatoLevel">
+  <option value="0">0 (Cook 1 dish)</option>
+  <option value="1">1 (Cook 2 dishes)</option>
+  <option value="2">2 (Cook 3 dishes)</option>
+</select>
+
+<button onclick="runCalculation()">Calculate</button>
+
+<div id="result"></div>
+
+<script>
+const levels = [
+  "Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III",
+  "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III",
+  "Sous Chef I", "Sous Chef II", "Sous Chef III",
+  "Head Chef I", "Head Chef II", "Head Chef III",
+  "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III",
+  "Master of Flavour I", "Master of Flavour II", "Master of Flavour III",
+  "MAX"
+];
+
+const expPerLevel = {
+  "Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand III": 20,
+  "Apprentice Cook I": 40, "Apprentice Cook II": 80, "Apprentice Cook III": 120,
+  "Sous Chef I": 160, "Sous Chef II": 240, "Sous Chef III": 280,
+  "Head Chef I": 320, "Head Chef II": 400, "Head Chef III": 500,
+  "Culinary Virtuoso I": 600, "Culinary Virtuoso II": 700, "Culinary Virtuoso III": 800,
+  "Master of Flavour I": 900, "Master of Flavour II": 1000, "Master of Flavour III": 1200,
+  "MAX": 1400
+};
+
+const dishes = [
+  { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 },
+  { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 },
+  { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }
+];
+
+const talentTimeReduction = {
+  0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25
+};
+
+function populateSelect(id, options) {
+  const select = document.getElementById(id);
+  options.forEach(opt => {
+    const option = document.createElement('option');
+    option.value = opt;
+    option.textContent = opt;
+    select.appendChild(option);
+  });
+}
+
+populateSelect('currentLevel', levels);
+populateSelect('targetLevel', levels);
+
+function runCalculation() {
+  const currentLevel = document.getElementById('currentLevel').value;
+  const targetLevel = document.getElementById('targetLevel').value;
+  const progress = parseFloat(document.getElementById('progress').value) || 0;
+  const talentLevel = parseInt(document.getElementById('talentLevel').value);
+  const delegatoLevel = parseInt(document.getElementById('delegatoLevel').value);
+  const resultDiv = document.getElementById('result');
+
+  const currentIndex = levels.indexOf(currentLevel);
+  const targetIndex = levels.indexOf(targetLevel);
+
+  if (currentIndex === -1 || targetIndex === -1 || targetIndex <= currentIndex) {
+    resultDiv.textContent = 'Please select valid levels.';
+    return;
+  }
+
+  let totalExpNeeded = 0;
+  for (let i = currentIndex + 1; i <= targetIndex; i++) {
+    totalExpNeeded += expPerLevel[levels[i]];
+  }
+  totalExpNeeded -= progress;
+  if (totalExpNeeded < 0) totalExpNeeded = 0;
+
+  const [dish1, dish2, dish3] = dishes;
+  const reduction = 1 - (talentTimeReduction[talentLevel] || 0);
+
+  let bestCombo = null;
+  for (let g = Math.floor(totalExpNeeded / dish1.exp); g >= 0; g--) {
+    let rem1 = totalExpNeeded - g * dish1.exp;
+    for (let f = Math.floor(rem1 / dish2.exp); f >= 0; f--) {
+      let rem2 = rem1 - f * dish2.exp;
+      if (rem2 % dish3.exp === 0) {
+        let w = rem2 / dish3.exp;
+        if (g * dish1.exp + f * dish2.exp + w * dish3.exp === totalExpNeeded) {
+          bestCombo = { g, f, w };
+          break;
+        }
+      }
+    }
+    if (bestCombo) break;
+  }
+
+  if (!bestCombo) {
+    resultDiv.textContent = "No efficient combination found.";
+    return;
+  }
+
+  const totalDishes = bestCombo.g + bestCombo.f + bestCombo.w;
+  const totalCookTime =
+    bestCombo.g * dish1.cookTimeHr * reduction +
+    bestCombo.f * dish2.cookTimeHr * reduction +
+    bestCombo.w * dish3.cookTimeHr * reduction;
+
+  const parallelFactor = delegatoLevel > 0 ? delegatoLevel + 1 : 1;
+  const realTime = totalCookTime / parallelFactor;
+
+  const days = Math.floor(realTime / 24);
+  const hours = Math.round(realTime % 24);
+
+  resultDiv.textContent =
+    `EXP needed: ${totalExpNeeded}\n` +
+    `Total dishes needed: ${totalDishes}\n` +
+    `Dishes breakdown:\n` +
+    `  ${bestCombo.g} × ${dish1.name}\n` +
+    `  ${bestCombo.f} × ${dish2.name}\n` +
+    `  ${bestCombo.w} × ${dish3.name}\n` +
+    `Total real time required: ${days} day(s) and ${hours} hour(s)`;
+}
+</script>
+
+</body>
+</html>
