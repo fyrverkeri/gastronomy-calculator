@@ -75,10 +75,10 @@
     width: 300px;
     margin: 0 auto 50px;
     box-shadow:
-    0 0 5px #cc7820,
-    0 0 10px #cc7820,
-    0 0 15px #cc7820,
-    0 0 20px #cc7820;
+    0 0 5px #e7a45e,
+    0 0 10px #e7a45e,
+    0 0 15px #e7a45e,
+    0 0 20px #e7a45e;
     text-align: center;
   }
 
@@ -125,6 +125,31 @@
     font-weight: bold;
     white-space: pre-wrap;
   }
+   .timestamp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.25rem;
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+  }
+  .copy-image {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-left: 8px;
+  }
+
+  .copy-image:hover {
+    transform: scale(0.85);
+  }
+  .dish-group {
+    margin-bottom: 1rem;
+  }
+  #startTime {
+    font-family: 'Tahoma', sans-serif;
+}
 </style>
 </head>
 <body>
@@ -132,7 +157,8 @@
 <h1 class="glow-text" style="text-align:center;">HPMA Gastronomy Calculator</h1>
 <div class="tabs">
   <div class="tab active" onclick="switchTab('expTab')">EXP</div>
-  <div class="tab" onclick="switchTab('timeTab')">Time</div>
+  <div class="tab" onclick="switchTab('researchTab')">Research</div>
+  <div class="tab" onclick="switchTab('harvestTab')">Commission Timer</div>
 </div>
 <div id="expTab" class="calculator-box">
   <label for="currentLevel">Current Level</label>
@@ -151,7 +177,7 @@
     <option value="2">2 (10% faster, unlocks at Apprentice cook I)</option>
     <option value="3">3 (15% faster, unlocks at Sous Chef I)</option>
     <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
-    <option value="5">5 (25% faster), unlocks at Culinary Virtuoso I)</option>
+    <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
   </select>
 
   <label for="delegatoLevel">The Delegator Talent Level</label>
@@ -165,41 +191,55 @@
   <div id="result"></div>
 </div>
 
-<div id="timeTab" class="calculator-box" style="display:none">
+<div id="researchTab" class="calculator-box" style="display:none">
   <label for="recipeSelect">Select Recipe</label>
   <select id="recipeSelect">
-    <option value="0">Gilded Shore Risotto (8 hr, 4 EXP)</option>
-    <option value="1">Farmstead Feast Roast (6 hr, 3 EXP)</option>
-    <option value="2">Woodland Mushroom Risotto (4 hr, 2 EXP)</option>
+    <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
+    <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
+    <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
   </select>
 
-  <label for="dishAmount">Target Number</label>
+  <label for="dishAmount">Commission Target</label>
   <input type="number" id="dishAmount" min="1" value="1" />
 
   <label for="timeTalentLevel">Faster Than Flame Talent Level</label>
   <select id="timeTalentLevel">
     <option value="0">0 (None)</option>
-    <option value="1">1 (5%)</option>
-    <option value="2">2 (10%)</option>
-    <option value="3">3 (15%)</option>
-    <option value="4">4 (20%)</option>
-    <option value="5">5 (25%)</option>
+    <option value="1">1 (5% faster, unlocks at Kitchen Hand I)</option>
+    <option value="2">2 (10% faster, unlocks at Apprentice cook I)</option>
+    <option value="3">3 (15% faster, unlocks at Sous Chef I)</option>
+    <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
+    <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
   </select>
 
   <label for="timeDelegatoLevel">The Delegator Talent Level</label>
   <select id="timeDelegatoLevel">
     <option value="0">0 (1 station)</option>
-    <option value="1">1 (2 stations)</option>
-    <option value="2">2 (3 stations)</option>
+    <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
+    <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
   </select>
 
   <button onclick="calculateTime()">Calculate</button>
   <div id="timeResult"></div>
 </div>
+
+<div id="harvestTab" class="calculator-box" style="display:none">
+  <label for="startTime">Start Date and Time</label>
+  <input type="datetime-local" id="startTime" />
+
+  <label for="harvestTalent">Faster Than Flame Talent Level</label>
+  <select id="harvestTalent"></select>
+  <label>Select up to 7 dishes</label>
+  <div id="dishSelectors"></div>
+
+  <button onclick="calculateHarvestTimes()">Calculate</button>
+</div>
+
+
 <script>
 function switchTab(tabId) {
   document.getElementById('expTab').style.display = tabId === 'expTab' ? 'block' : 'none';
-  document.getElementById('timeTab').style.display = tabId === 'timeTab' ? 'block' : 'none';
+  document.getElementById('comissionTab').style.display = tabId === 'researchTab' ? 'block' : 'none';
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
 }
@@ -294,7 +334,108 @@ function calculateTime() {
   document.getElementById('timeResult').textContent =
     `Total time required: ${days} day(s) and ${hours} hour(s)`;
 }
+function populateSelectWithText(id, options) {
+  const select = document.getElementById(id);
+  select.innerHTML = ''; // Clear existing options
+  options.forEach(opt => {
+    const option = document.createElement('option');
+    option.value = opt[0]; // The number at the start (e.g. '0', '1')
+    option.textContent = opt; // The full text with description
+    select.appendChild(option);
+  });
+}
+const talentOptions = [
+  "0 (None)",
+  "1 (5% faster, unlocks at Kitchen Hand I)",
+  "2 (10% faster, unlocks at Apprentice cook I)",
+  "3 (15% faster, unlocks at Sous Chef I)",
+  "4 (20% faster, unlocks at Head Chef I)",
+  "5 (25% faster, unlocks at Culinary Virtuoso I)"
+];
+
+populateSelectWithText('harvestTalent', talentOptions);
+const dishContainer = document.getElementById("dishSelectors");
+for (let i = 0; i < 7; i++) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "dish-group";
+  const sel = document.createElement("select");
+  sel.className = "dishOption";
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = " ";
+  sel.appendChild(defaultOption);
+  dishes.forEach((dish, idx) => {
+    const option = document.createElement("option");
+    option.value = idx;
+    option.textContent = dish.name;
+    sel.appendChild(option);
+  });
+  sel.addEventListener("mousedown", function() {
+    this.selectedIndex = -1;
+  });
+  const result = document.createElement("div");
+  result.className = "timestamp";
+  result.style.display = "none";
+  wrapper.appendChild(sel);
+  wrapper.appendChild(result);
+  dishContainer.appendChild(wrapper);
+}
+
+function calculateHarvestTimes() {
+  const baseTime = new Date(document.getElementById("startTime").value);
+  if (isNaN(baseTime)) {
+    alert("Please enter a valid start time.");
+    return;
+  }
+  const talent = parseInt(document.getElementById("harvestTalent").value);
+  const reduction = 1 - talentTimeReduction[talent];
+  const wrappers = document.querySelectorAll(".dish-group");
+
+  let cumulativeTimeMs = 0;
+
+  wrappers.forEach(wrapper => {
+    const sel = wrapper.querySelector(".dishOption");
+    const resultDiv = wrapper.querySelector(".timestamp");
+    resultDiv.innerHTML = "";
+    if (!sel.value) {
+      resultDiv.style.display = "none";
+      return;
+    }
+    const dish = dishes[parseInt(sel.value)];
+    const cookTimeMs = dish.cookTimeHr * 3600000 * reduction;
+
+    cumulativeTimeMs += cookTimeMs;
+
+    const readyTime = new Date(baseTime.getTime() + cumulativeTimeMs);
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const formattedTime = `${months[readyTime.getMonth()]} ${readyTime.getDate().toString().padStart(2, '0')} ${readyTime.getHours().toString().padStart(2, '0')}:${readyTime.getMinutes().toString().padStart(2, '0')}`;
+
+    const timestamp = `<t:${Math.floor(readyTime.getTime() / 1000)}:f>`;
+    const copyContent = `${dish.name} → ${timestamp}`;
+    resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" onclick="navigator.clipboard.writeText('${copyContent}')" />`;
+    resultDiv.style.display = "flex";
+  });
+}
+
+function switchTab(tabId) {
+  const tabs = ["expTab", "researchTab", "harvestTab"];
+  tabs.forEach(t => document.getElementById(t).style.display = t === tabId ? 'block' : 'none');
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+}
+  window.addEventListener('DOMContentLoaded', () => {
+    const now = new Date();
+    now.setSeconds(0, 0); // remove seconds and milliseconds
+
+    const pad = n => n.toString().padStart(2, '0');
+
+    const localDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+    document.getElementById('startTime').value = localDateTime;
+  });
 </script>
 </body>
 </html>
+
 
