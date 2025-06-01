@@ -231,10 +231,10 @@
   <select id="harvestTalent"></select>
   <label>Select up to 7 dishes</label>
   <div id="dishSelectors"></div>
-
+<div id="harvestTotalExp" style="margin-top: 1em; font-weight: bold;"></div>
   <button onclick="calculateHarvestTimes()">Calculate</button>
-</div>
 
+</div>
 
 <script>
 function switchTab(tabId) {
@@ -315,7 +315,7 @@ function runCalculation() {
   resultDiv.textContent =
     `EXP needed: ${totalExpNeeded}\n\n` +
     `Optimized Plan:\n  ${bestCombo.g} × ${dish1.name}\n  ${bestCombo.f} × ${dish2.name}\n  ${bestCombo.w} × ${dish3.name}\n\n` +
-    `Total time required: ${days} day(s) and ${hours} hour(s)`;
+    `Total time: ${days} day(s) and ${hours} hour(s)`;
 }
 
 function calculateTime() {
@@ -330,9 +330,11 @@ function calculateTime() {
   const realTime = totalCookTime / parallel;
   const days = Math.floor(realTime / 24);
   const hours = Math.round(realTime % 24);
+  const totalExp = dishCount * dishes[recipeIndex].exp;
 
   document.getElementById('timeResult').textContent =
-    `Total time required: ${days} day(s) and ${hours} hour(s)`;
+    `Total EXP: ${totalExp}\n\n` +
+    `Total time: ${days} day(s) and ${hours} hour(s)`;
 }
 function populateSelectWithText(id, options) {
   const select = document.getElementById(id);
@@ -387,11 +389,13 @@ function calculateHarvestTimes() {
     alert("Please enter a valid start time.");
     return;
   }
+
   const talent = parseInt(document.getElementById("harvestTalent").value);
   const reduction = 1 - talentTimeReduction[talent];
   const wrappers = document.querySelectorAll(".dish-group");
 
   let cumulativeTimeMs = 0;
+  let totalExp = 0;
 
   wrappers.forEach(wrapper => {
     const sel = wrapper.querySelector(".dishOption");
@@ -401,10 +405,11 @@ function calculateHarvestTimes() {
       resultDiv.style.display = "none";
       return;
     }
+
     const dish = dishes[parseInt(sel.value)];
     const cookTimeMs = dish.cookTimeHr * 3600000 * reduction;
-
     cumulativeTimeMs += cookTimeMs;
+    totalExp += dish.exp;
 
     const readyTime = new Date(baseTime.getTime() + cumulativeTimeMs);
 
@@ -413,9 +418,16 @@ function calculateHarvestTimes() {
 
     const timestamp = `<t:${Math.floor(readyTime.getTime() / 1000)}:f>`;
     const copyContent = `${dish.name} → ${timestamp}`;
+
     resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" onclick="navigator.clipboard.writeText('${copyContent}')" />`;
     resultDiv.style.display = "flex";
   });
+
+  const expDiv = document.getElementById("harvestTotalExp");
+  if (expDiv) {
+    expDiv.textContent = `Total EXP: ${totalExp}`;
+    expDiv.style.display = totalExp > 0 ? "block" : "none";
+  }
 }
 
 function switchTab(tabId) {
@@ -437,5 +449,6 @@ function switchTab(tabId) {
 </script>
 </body>
 </html>
+
 
 
