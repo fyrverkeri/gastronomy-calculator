@@ -197,6 +197,10 @@
     <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
     <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
     <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
+    <option value="3">Braised Venison Stew (8 hr, 4 exp)</option>
+    <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
+    <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
+    <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
   </select>
 
   <label for="dishAmount">Commission Target</label>
@@ -246,7 +250,7 @@ function switchTab(tabId) {
 
 const levels = ["Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III", "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III", "Sous Chef I", "Sous Chef II", "Sous Chef III", "Head Chef I", "Head Chef II", "Head Chef III", "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III", "Master of Flavour I", "Master of Flavour II", "Master of Flavour III", "MAX"];
 const expPerLevel = {"Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand III": 20, "Apprentice Cook I": 40, "Apprentice Cook II": 80, "Apprentice Cook III": 120, "Sous Chef I": 160, "Sous Chef II": 240, "Sous Chef III": 280, "Head Chef I": 320, "Head Chef II": 400, "Head Chef III": 500, "Culinary Virtuoso I": 600, "Culinary Virtuoso II": 700, "Culinary Virtuoso III": 800, "Master of Flavour I": 900, "Master of Flavour II": 1000, "Master of Flavour III": 1200, "MAX": 1400};
-const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 } ];
+const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 },  ];
 const talentTimeReduction = { 0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25 };
 
 function populateSelect(id, options) {
