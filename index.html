@@ -195,14 +195,14 @@
 <div id="researchTab" class="calculator-box" style="display:none">
   <label for="recipeSelect">Select Recipe</label>
   <select id="recipeSelect">
-    <option value="0"> </option>
-    <option value="1">Gilded Shore Risotto (8 hr, 4 exp)</option>
-    <option value="2">Farmstead Feast Roast (6 hr, 3 exp)</option>
-    <option value="3">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
-    <option value="4">Braised Venison Stew (8 hr, 4 exp)</option>
-    <option value="5">Hearty Custard Pie (6 hr, 3 exp)</option>
-    <option value="6">Paleleaf Meat Roll (6 hr, 3 exp)</option>
-    <option value="7">Saltbaked Shrimp (6 hr, 3 exp)</option>
+    <option value=""> </option>
+    <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
+    <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
+    <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
+    <option value="3">Braised Venison Stew (8 hr, 4 exp)</option>
+    <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
+    <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
+    <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
   </select>
 
   <div id="researchTasks" style="margin-top: 10px;"></div>
@@ -260,13 +260,13 @@ const expPerLevel = {"Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand I
 const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 },  ];
 const talentTimeReduction = { 0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25 };
 const researchTaskMap = {
-  1: ["🍳 60 any quality", "💰 30 Epic+", "🍳 20 Legendary", "🍳 100 in gauntlet (3+ recipes)"],
-  2: ["🍳 60 Epic+", "💰 10 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍽️ 1"],
-  3: ["🍳 80 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍳 5 in 1 gauntlet (3+ recipes) * 20", "🍽️ 1"],
-  4: ["🍳 80 any quality", "💰 10 Legendary", "Complete 30 gauntlets (2400+ score)", "🎁 1"],
-  5: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
-  6: ["🍳 80 any quality", "Complete 150 gauntlets", "🍳5 in 1 gauntlet (3+ recipes) * 20", "💰 10 Legendary"],
-  7: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
+  0: ["🍳 60 any quality", "💰 30 Epic+", "🍳 20 Legendary", "🍳 100 in gauntlet (3+ recipes)"],
+  1: ["🍳 60 Epic+", "💰 10 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍽️ 1"],
+  2: ["🍳 80 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍳 5 in 1 gauntlet (3+ recipes) * 20", "🍽️ 1"],
+  3: ["🍳 80 any quality", "💰 10 Legendary", "Complete 30 gauntlets (2400+ score)", "🎁 1"],
+  4: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
+  5: ["🍳 80 any quality", "Complete 150 gauntlets", "🍳5 in 1 gauntlet (3+ recipes) * 20", "💰 10 Legendary"],
+  6: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
 };
 
 document.getElementById("recipeSelect").addEventListener("change", function () {
