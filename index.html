@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Jua&display=swap" rel="stylesheet">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="images/gascalicon.png">
 <title>HPMA Gastronomy Calculator</title>
 <style>
   body {
@@ -194,14 +195,17 @@
 <div id="researchTab" class="calculator-box" style="display:none">
   <label for="recipeSelect">Select Recipe</label>
   <select id="recipeSelect">
-    <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
-    <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
-    <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
-    <option value="3">Braised Venison Stew (8 hr, 4 exp)</option>
-    <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
-    <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
-    <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
+    <option value="0"> </option>
+    <option value="1">Gilded Shore Risotto (8 hr, 4 exp)</option>
+    <option value="2">Farmstead Feast Roast (6 hr, 3 exp)</option>
+    <option value="3">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
+    <option value="4">Braised Venison Stew (8 hr, 4 exp)</option>
+    <option value="5">Hearty Custard Pie (6 hr, 3 exp)</option>
+    <option value="6">Paleleaf Meat Roll (6 hr, 3 exp)</option>
+    <option value="7">Saltbaked Shrimp (6 hr, 3 exp)</option>
   </select>
+
+  <div id="researchTasks" style="margin-top: 10px;"></div>
 
   <label for="dishAmount">Commission Target</label>
   <input type="number" id="dishAmount" min="1" value="1" />
@@ -233,25 +237,51 @@
 
   <label for="harvestTalent">Faster Than Flame Talent Level</label>
   <select id="harvestTalent"></select>
-  <label>Select up to 7 dishes</label>
-  <div id="dishSelectors"></div>
-<div id="harvestTotalExp" style="margin-top: 1em; font-weight: bold;"></div>
-  <button onclick="calculateHarvestTimes()">Calculate</button>
 
+  <label>Commission Queue</label>
+  <div id="commissionSelector"></div>
+<div style="display: flex; align-items: center; gap: 0.5em;">
+  <label for="commissionHours" style="white-space: nowrap; line-height: 1.6;">Time Left:</label>
+  <input type="number" id="commissionHours" min="0" max="23" placeholder="Hours" style="width: 50px; height: 20px;" /> :
+  <input type="number" id="commissionMinutes" min="0" max="59" placeholder="Minutes" style="width: 50px; height: 20px;" />
+</div>
+
+  <label>Reserved Queue</label>
+  <div id="reservedSelectors"></div>
+  <button id="bulkCopyButton" style="display:none; margin-top:10px;">Copy All</button>
+  <div id="harvestTotalExp" style="margin-top: 1em; font-weight: bold;"></div>
+  <button onclick="calculateHarvestTimes()">Calculate</button>
 </div>
 
 <script>
-function switchTab(tabId) {
-  document.getElementById('expTab').style.display = tabId === 'expTab' ? 'block' : 'none';
-  document.getElementById('comissionTab').style.display = tabId === 'researchTab' ? 'block' : 'none';
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
-}
 
 const levels = ["Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III", "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III", "Sous Chef I", "Sous Chef II", "Sous Chef III", "Head Chef I", "Head Chef II", "Head Chef III", "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III", "Master of Flavour I", "Master of Flavour II", "Master of Flavour III", "MAX"];
 const expPerLevel = {"Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand III": 20, "Apprentice Cook I": 40, "Apprentice Cook II": 80, "Apprentice Cook III": 120, "Sous Chef I": 160, "Sous Chef II": 240, "Sous Chef III": 280, "Head Chef I": 320, "Head Chef II": 400, "Head Chef III": 500, "Culinary Virtuoso I": 600, "Culinary Virtuoso II": 700, "Culinary Virtuoso III": 800, "Master of Flavour I": 900, "Master of Flavour II": 1000, "Master of Flavour III": 1200, "MAX": 1400};
 const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 },  ];
 const talentTimeReduction = { 0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25 };
+const researchTaskMap = {
+  1: ["🍳 60 any quality", "💰 30 Epic+", "🍳 20 Legendary", "🍳 100 in gauntlet (3+ recipes)"],
+  2: ["🍳 60 Epic+", "💰 10 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍽️ 1"],
+  3: ["🍳 80 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍳 5 in 1 gauntlet (3+ recipes) * 20", "🍽️ 1"],
+  4: ["🍳 80 any quality", "💰 10 Legendary", "Complete 30 gauntlets (2400+ score)", "🎁 1"],
+  5: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
+  6: ["🍳 80 any quality", "Complete 150 gauntlets", "🍳5 in 1 gauntlet (3+ recipes) * 20", "💰 10 Legendary"],
+  7: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
+};
+
+document.getElementById("recipeSelect").addEventListener("change", function () {
+  const selectedIndex = this.value;
+  const tasks = researchTaskMap[selectedIndex];
+
+  const taskContainer = document.getElementById("researchTasks");
+  if (tasks && tasks.length > 0) {
+    taskContainer.innerHTML = "<strong>Research Tasks:</strong><ul style='list-style-type: none; padding-left: 0;'>" + 
+  tasks.map(task => `<li>${task}</li>`).join("") + 
+  "</ul>";
+  } else {
+    taskContainer.innerHTML = "";
+  }
+});
 
 function populateSelect(id, options) {
   const select = document.getElementById(id);
@@ -286,16 +316,28 @@ function runCalculation() {
   totalExpNeeded -= progress;
   if (totalExpNeeded < 0) totalExpNeeded = 0;
 
-  const [dish1, dish2, dish3] = dishes;
   const reduction = 1 - (talentTimeReduction[talentLevel] || 0);
+
+  const dishesByExp = {};
+  for (const dish of dishes) {
+    if (!dishesByExp[dish.exp]) dishesByExp[dish.exp] = [];
+    dishesByExp[dish.exp].push(dish);
+  }
+
+  const expValues = Object.keys(dishesByExp).map(Number).sort((a, b) => b - a);
+
+  const [dish1] = dishesByExp[expValues[0]] || [];
+  const [dish2] = dishesByExp[expValues[1]] || [];
+  const [dish3] = dishesByExp[expValues[2]] || [];
+
   let bestCombo = null;
 
-  for (let g = Math.floor(totalExpNeeded / dish1.exp); g >= 0; g--) {
-    let rem1 = totalExpNeeded - g * dish1.exp;
-    for (let f = Math.floor(rem1 / dish2.exp); f >= 0; f--) {
-      let rem2 = rem1 - f * dish2.exp;
-      if (rem2 % dish3.exp === 0) {
-        let w = rem2 / dish3.exp;
+  for (let g = Math.floor(totalExpNeeded / expValues[0]); g >= 0; g--) {
+    let rem1 = totalExpNeeded - g * expValues[0];
+    for (let f = Math.floor(rem1 / expValues[1]); f >= 0; f--) {
+      let rem2 = rem1 - f * expValues[1];
+      if (rem2 % expValues[2] === 0) {
+        let w = rem2 / expValues[2];
         bestCombo = { g, f, w };
         break;
       }
@@ -316,11 +358,33 @@ function runCalculation() {
   const days = Math.floor(realTime / 24);
   const hours = Math.round(realTime % 24);
 
-  resultDiv.textContent =
-    `EXP needed: ${totalExpNeeded}\n\n` +
-    `Optimized Plan:\n  ${bestCombo.g} × ${dish1.name}\n  ${bestCombo.f} × ${dish2.name}\n  ${bestCombo.w} × ${dish3.name}\n\n` +
-    `Total time: ${days} day(s) and ${hours} hour(s)`;
+  const expToDishes = {};
+  for (const dish of dishes) {
+    if (!expToDishes[dish.exp]) expToDishes[dish.exp] = [];
+    expToDishes[dish.exp].push(dish);
+  }
+
+  const makeImageHTML = (dishes, count) => {
+    const seen = new Set();
+    let html = `${count} × `;
+    for (const dish of dishes) {
+      if (seen.has(dish.name)) continue;
+      seen.add(dish.name);
+            const imgPath = `images/${dish.name.toLowerCase().replace(/\s+/g, ' ')}.png`;
+      html += `<img src="${imgPath}" title="${dish.name}" style="max-width:40px;max-height:40px;margin:2px;vertical-align:middle;object-fit:contain;">`;
+    }
+    return html + '<br>';
+  };
+
+  let output = `EXP needed: ${totalExpNeeded}<br><br>Optimal Combo:<br>`;
+  output += makeImageHTML(expToDishes[expValues[0]], bestCombo.g);
+  output += makeImageHTML(expToDishes[expValues[1]], bestCombo.f);
+  output += makeImageHTML(expToDishes[expValues[2]], bestCombo.w);
+  output += `<br>Total time: ${days} day(s) and ${hours} hour(s)`;
+
+  resultDiv.innerHTML = output;
 }
+
 
 function calculateTime() {
   const recipeIndex = parseInt(document.getElementById('recipeSelect').value);
@@ -342,11 +406,11 @@ function calculateTime() {
 }
 function populateSelectWithText(id, options) {
   const select = document.getElementById(id);
-  select.innerHTML = ''; // Clear existing options
+  select.innerHTML = '';
   options.forEach(opt => {
     const option = document.createElement('option');
-    option.value = opt[0]; // The number at the start (e.g. '0', '1')
-    option.textContent = opt; // The full text with description
+    option.value = opt[0];
+    option.textContent = opt; 
     select.appendChild(option);
   });
 }
@@ -360,7 +424,9 @@ const talentOptions = [
 ];
 
 populateSelectWithText('harvestTalent', talentOptions);
-const dishContainer = document.getElementById("dishSelectors");
+const commissionContainer = document.getElementById("commissionSelector");
+const reservedContainer = document.getElementById("reservedSelectors");
+
 for (let i = 0; i < 7; i++) {
   const wrapper = document.createElement("div");
   wrapper.className = "dish-group";
@@ -384,7 +450,12 @@ for (let i = 0; i < 7; i++) {
   result.style.display = "none";
   wrapper.appendChild(sel);
   wrapper.appendChild(result);
-  dishContainer.appendChild(wrapper);
+
+  if (i === 0) {
+    commissionContainer.appendChild(wrapper);
+  } else {
+    reservedContainer.appendChild(wrapper);
+  }
 }
 
 function calculateHarvestTimes() {
@@ -398,10 +469,14 @@ function calculateHarvestTimes() {
   const reduction = 1 - talentTimeReduction[talent];
   const wrappers = document.querySelectorAll(".dish-group");
 
+  const hoursInput = document.getElementById('commissionHours').value;
+  const minutesInput = document.getElementById('commissionMinutes').value;
+  const commissionTimeLeftMinutes = (parseInt(hoursInput) || 0) * 60 + (parseInt(minutesInput) || 0);
+
   let cumulativeTimeMs = 0;
   let totalExp = 0;
 
-  wrappers.forEach(wrapper => {
+  wrappers.forEach((wrapper, index) => {
     const sel = wrapper.querySelector(".dishOption");
     const resultDiv = wrapper.querySelector(".timestamp");
     resultDiv.innerHTML = "";
@@ -411,26 +486,54 @@ function calculateHarvestTimes() {
     }
 
     const dish = dishes[parseInt(sel.value)];
-    const cookTimeMs = dish.cookTimeHr * 3600000 * reduction;
+    let cookTimeMs = dish.cookTimeHr * 3600000 * reduction;
+
+    if (index === 0 && commissionTimeLeftMinutes > 0) {
+      cookTimeMs = commissionTimeLeftMinutes * 60000;
+    }
+
     cumulativeTimeMs += cookTimeMs;
     totalExp += dish.exp;
 
     const readyTime = new Date(baseTime.getTime() + cumulativeTimeMs);
+    const timestampUnix = Math.floor(readyTime.getTime() / 1000);
+    const discordTimestamp = `<t:${timestampUnix}:t>`;
+    const copyContent = `${dish.name} → ${discordTimestamp}`;
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const formattedTime = `${months[readyTime.getMonth()]} ${readyTime.getDate().toString().padStart(2, '0')} ${readyTime.getHours().toString().padStart(2, '0')}:${readyTime.getMinutes().toString().padStart(2, '0')}`;
 
-    const timestamp = `<t:${Math.floor(readyTime.getTime() / 1000)}:f>`;
-    const copyContent = `${dish.name} → ${timestamp}`;
-
-    resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" onclick="navigator.clipboard.writeText('${copyContent}')" />`;
+    resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" title="Copy timestamp" onclick="navigator.clipboard.writeText('${copyContent}')" />`;
+    resultDiv.setAttribute("data-discord", copyContent);
     resultDiv.style.display = "flex";
   });
 
   const expDiv = document.getElementById("harvestTotalExp");
-  if (expDiv) {
-    expDiv.textContent = `Total EXP: ${totalExp}`;
-    expDiv.style.display = totalExp > 0 ? "block" : "none";
+
+  if (totalExp > 0) {
+    const oldIcon = expDiv.querySelector("img.copy-image");
+    if (oldIcon) oldIcon.remove();
+
+    const copyAllImage = document.createElement("img");
+    copyAllImage.src = "https://cdn-icons-png.flaticon.com/512/60/60990.png";
+    copyAllImage.alt = "Copy All";
+    copyAllImage.className = "copy-image";
+    copyAllImage.title = "Copy all timestamps";
+
+    copyAllImage.onclick = () => {
+      const allTimestamps = Array.from(document.querySelectorAll(".timestamp"))
+        .map(div => div.getAttribute("data-discord"))
+        .filter(Boolean)
+        .join("\n");
+
+      navigator.clipboard.writeText(allTimestamps);
+    };
+
+    expDiv.innerHTML = `Total EXP: ${totalExp} `;
+    expDiv.appendChild(copyAllImage);
+    expDiv.style.display = "block";
+  } else {
+    expDiv.style.display = "none";
   }
 }
 
@@ -442,7 +545,7 @@ function switchTab(tabId) {
 }
   window.addEventListener('DOMContentLoaded', () => {
     const now = new Date();
-    now.setSeconds(0, 0); // remove seconds and milliseconds
+    now.setSeconds(0, 0);
 
     const pad = n => n.toString().padStart(2, '0');
 
