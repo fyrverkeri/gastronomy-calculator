@@ -203,6 +203,9 @@
     <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
     <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
     <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
+    <option value="7">Wild Herb Tomahawk (12 hr, 6 exp)</option>
+    <option value="8">Simple Seared Scallops (8 hr, 4 exp)</option>
+    <option value="9">Hearthroast Chicken (4 hr, 2 exp)</option>
   </select>
 
   <div id="researchTasks" style="margin-top: 10px;"></div>
@@ -257,7 +260,7 @@
 
 const levels = ["Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III", "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III", "Sous Chef I", "Sous Chef II", "Sous Chef III", "Head Chef I", "Head Chef II", "Head Chef III", "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III", "Master of Flavour I", "Master of Flavour II", "Master of Flavour III", "MAX"];
 const expPerLevel = {"Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand III": 20, "Apprentice Cook I": 40, "Apprentice Cook II": 80, "Apprentice Cook III": 120, "Sous Chef I": 160, "Sous Chef II": 240, "Sous Chef III": 280, "Head Chef I": 320, "Head Chef II": 400, "Head Chef III": 500, "Culinary Virtuoso I": 600, "Culinary Virtuoso II": 700, "Culinary Virtuoso III": 800, "Master of Flavour I": 900, "Master of Flavour II": 1000, "Master of Flavour III": 1200, "MAX": 1400};
-const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 },  ];
+const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 }, { name: "Wild Herb Tomahawk", cookTimeHr: 12, exp: 6 }, { name: "Simple Seared Scallops", cookTimeHr: 8, exp: 4 }, { name: "Hearthroast Chicken", cookTimeHr: 4, exp: 2 }, ];
 const talentTimeReduction = { 0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25 };
 const researchTaskMap = {
   0: ["🍳 60 any quality", "💰 30 Epic+", "🍳 20 Legendary", "🍳 100 in gauntlet (3+ recipes)"],
@@ -267,6 +270,9 @@ const researchTaskMap = {
   4: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
   5: ["🍳 80 any quality", "Complete 150 gauntlets", "🍳5 in 1 gauntlet (3+ recipes) * 20", "💰 10 Legendary"],
   6: ["🍳 100 any quality", "Complete 150 gauntlets", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 20 Legendary"],
+  7: ["🍳 80 Epic+", "💰 20 Legendary", "🍳 150 in gauntlet (3+ recipes)", "🍽️ 1"],
+  8: ["🍳 100 any quality", "💰 20 Legendary", "Complete 10 gauntlets (2400+ score)", "🎁 1"],
+  9: ["🍳 200 any quality", "Complete 70 gauntlets (2400+ score)", "💁 Flaunt * 1", "💰 10 Legendary"],
 };
 
 document.getElementById("recipeSelect").addEventListener("change", function () {
@@ -329,21 +335,26 @@ function runCalculation() {
   const [dish1] = dishesByExp[expValues[0]] || [];
   const [dish2] = dishesByExp[expValues[1]] || [];
   const [dish3] = dishesByExp[expValues[2]] || [];
+  const [dish4] = dishesByExp[expValues[3]] || [];
 
   let bestCombo = null;
 
-  for (let g = Math.floor(totalExpNeeded / expValues[0]); g >= 0; g--) {
-    let rem1 = totalExpNeeded - g * expValues[0];
-    for (let f = Math.floor(rem1 / expValues[1]); f >= 0; f--) {
-      let rem2 = rem1 - f * expValues[1];
-      if (rem2 % expValues[2] === 0) {
-        let w = rem2 / expValues[2];
-        bestCombo = { g, f, w };
+for (let g = Math.floor(totalExpNeeded / expValues[0]); g >= 0; g--) {
+  let rem1 = totalExpNeeded - g * expValues[0];
+  for (let f = Math.floor(rem1 / expValues[1]); f >= 0; f--) {
+    let rem2 = rem1 - f * expValues[1];
+    for (let w = Math.floor(rem2 / expValues[2]); w >= 0; w--) {
+      let rem3 = rem2 - w * expValues[2];
+      if (rem3 % expValues[3] === 0) {
+        let x = rem3 / expValues[3];
+        bestCombo = { g, f, w, x };
         break;
       }
     }
     if (bestCombo) break;
   }
+  if (bestCombo) break;
+}
 
   if (!bestCombo) {
     resultDiv.textContent = "No efficient combination found.";
@@ -353,7 +364,8 @@ function runCalculation() {
   const totalCookTime =
     bestCombo.g * dish1.cookTimeHr * reduction +
     bestCombo.f * dish2.cookTimeHr * reduction +
-    bestCombo.w * dish3.cookTimeHr * reduction;
+    bestCombo.w * dish3.cookTimeHr * reduction +
+    bestCombo.x * dish4.cookTimeHr * reduction;
   const realTime = totalCookTime / (delegatoLevel + 1);
   const days = Math.floor(realTime / 24);
   const hours = Math.round(realTime % 24);
@@ -380,6 +392,7 @@ function runCalculation() {
   output += makeImageHTML(expToDishes[expValues[0]], bestCombo.g);
   output += makeImageHTML(expToDishes[expValues[1]], bestCombo.f);
   output += makeImageHTML(expToDishes[expValues[2]], bestCombo.w);
+  output += makeImageHTML(expToDishes[expValues[3]], bestCombo.x);
   output += `<br>Total time: ${days} day(s) and ${hours} hour(s)`;
 
   resultDiv.innerHTML = output;
