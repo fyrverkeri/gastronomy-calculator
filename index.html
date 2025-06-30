@@ -141,7 +141,6 @@
     transition: transform 0.2s ease;
     margin-left: 8px;
   }
-
   .copy-image:hover {
     transform: scale(0.85);
   }
@@ -150,6 +149,70 @@
   }
   #startTime {
     font-family: 'Tahoma', sans-serif;
+}
+
+.collapsible-container {
+  margin: 15px 0;
+}
+.collapsible-toggle {
+  background-color: #b45f06;
+  color: #fff8e1;
+  cursor: pointer;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  border-radius: 10px;
+  margin-top: 1rem;
+  width: 50%;
+  text-align: center;
+  font-family: 'Tahoma', sans-serif;
+}
+.collapsible-toggle:hover {
+  background-color: #783f04;
+}
+.collapsible-content {
+  padding: 0 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: #fff8e1;
+  border-radius: 10px 10px 10px 10px;
+}
+#dishSelectionContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 6px;
+    padding: 5px 0; 
+    justify-content: center;
+}
+#dishSelectionContainer img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain; 
+}
+#dishSelectionContainer label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    width: 40px; 
+}
+.select-all-container {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#dishSelectionContainer input[type="checkbox"] {
+  box-shadow: none;
 }
 </style>
 </head>
@@ -161,6 +224,7 @@
   <div class="tab" onclick="switchTab('researchTab')">Research</div>
   <div class="tab" onclick="switchTab('harvestTab')">Commission Timer</div>
 </div>
+
 <div id="expTab" class="calculator-box">
   <label for="currentLevel">Current Level</label>
   <select id="currentLevel"></select>
@@ -170,6 +234,13 @@
 
   <label for="progress">Progress into Current Level (EXP)</label>
   <input type="number" id="progress" min="0" value="0" />
+
+  <div class="collapsible-container">
+    <button type="button" class="collapsible-toggle">Select Recipes ▼</button>
+    <div class="collapsible-content">
+      <div id="dishSelectionContainer">
+        </div>
+    </div>
 
   <label for="talentLevel">Faster Than Flame Talent Level</label>
   <select id="talentLevel">
@@ -187,6 +258,10 @@
     <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
     <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
   </select>
+  
+
+
+  </div>
 
   <button onclick="runCalculation()">Calculate</button>
   <div id="result"></div>
@@ -207,12 +282,9 @@
     <option value="8">Simple Seared Scallops (8 hr, 4 exp)</option>
     <option value="9">Hearthroast Chicken (4 hr, 2 exp)</option>
   </select>
-
   <div id="researchTasks" style="margin-top: 10px;"></div>
-
   <label for="dishAmount">Commission Target</label>
   <input type="number" id="dishAmount" min="1" value="1" />
-
   <label for="timeTalentLevel">Faster Than Flame Talent Level</label>
   <select id="timeTalentLevel">
     <option value="0">0 (None)</option>
@@ -222,14 +294,12 @@
     <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
     <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
   </select>
-
   <label for="timeDelegatoLevel">The Delegator Talent Level</label>
   <select id="timeDelegatoLevel">
     <option value="0">0 (1 station)</option>
     <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
     <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
   </select>
-
   <button onclick="calculateTime()">Calculate</button>
   <div id="timeResult"></div>
 </div>
@@ -237,18 +307,15 @@
 <div id="harvestTab" class="calculator-box" style="display:none">
   <label for="startTime">Start Date and Time</label>
   <input type="datetime-local" id="startTime" />
-
   <label for="harvestTalent">Faster Than Flame Talent Level</label>
   <select id="harvestTalent"></select>
-
   <label>Commission Queue</label>
   <div id="commissionSelector"></div>
-<div style="display: flex; align-items: center; gap: 0.5em;">
+  <div style="display: flex; align-items: center; gap: 0.5em;">
   <label for="commissionHours" style="white-space: nowrap; line-height: 1.6;">Time Left:</label>
   <input type="number" id="commissionHours" min="0" max="23" placeholder="Hours" style="width: 50px; height: 20px;" /> :
   <input type="number" id="commissionMinutes" min="0" max="59" placeholder="Minutes" style="width: 50px; height: 20px;" />
-</div>
-
+  </div>
   <label>Reserved Queue</label>
   <div id="reservedSelectors"></div>
   <button id="bulkCopyButton" style="display:none; margin-top:10px;">Copy All</button>
@@ -303,99 +370,103 @@ populateSelect('currentLevel', levels);
 populateSelect('targetLevel', levels);
 
 function runCalculation() {
-  const currentIndex = levels.indexOf(document.getElementById('currentLevel').value);
-  const targetIndex = levels.indexOf(document.getElementById('targetLevel').value);
-  let progress = parseFloat(document.getElementById('progress').value) || 0;
-  const talentLevel = parseInt(document.getElementById('talentLevel').value);
-  const delegatoLevel = parseInt(document.getElementById('delegatoLevel').value);
-  const resultDiv = document.getElementById('result');
+    const currentIndex = levels.indexOf(document.getElementById('currentLevel').value);
+    const targetIndex = levels.indexOf(document.getElementById('targetLevel').value);
+    let progress = parseFloat(document.getElementById('progress').value) || 0;
+    const talentLevel = parseInt(document.getElementById('talentLevel').value);
+    const delegatoLevel = parseInt(document.getElementById('delegatoLevel').value);
+    const resultDiv = document.getElementById('result');
 
-  if (currentIndex === -1 || targetIndex === -1 || targetIndex <= currentIndex) {
-    resultDiv.textContent = 'Please select valid levels.';
-    return;
-  }
+    if (currentIndex === -1 || targetIndex === -1 || targetIndex <= currentIndex) {
+        resultDiv.textContent = 'Please select valid levels.';
+        return;
+    }
 
-  let totalExpNeeded = 0;
-  for (let i = currentIndex + 1; i <= targetIndex; i++) {
-    totalExpNeeded += expPerLevel[levels[i]];
-  }
-  totalExpNeeded -= progress;
-  if (totalExpNeeded < 0) totalExpNeeded = 0;
+    const selectedDishCheckboxes = document.querySelectorAll('#dishSelectionContainer input[type="checkbox"]:checked');
+    if (selectedDishCheckboxes.length === 0) {
+        resultDiv.textContent = 'Please select at least one dish to cook.';
+        return;
+    }
+    const selectedDishNames = Array.from(selectedDishCheckboxes).map(cb => cb.value);
+    const availableDishes = dishes.filter(dish => selectedDishNames.includes(dish.name));
+    
+    const dishesByExp = {};
+    availableDishes.forEach(dish => {
+        if (!dishesByExp[dish.exp]) dishesByExp[dish.exp] = [];
+        dishesByExp[dish.exp].push(dish);
+    });
+    const expValues = Object.keys(dishesByExp).map(Number).sort((a, b) => b - a);
 
-  const reduction = 1 - (talentTimeReduction[talentLevel] || 0);
 
-  const dishesByExp = {};
-  for (const dish of dishes) {
-    if (!dishesByExp[dish.exp]) dishesByExp[dish.exp] = [];
-    dishesByExp[dish.exp].push(dish);
-  }
+ 
+    let totalExpNeeded = 0;
+    for (let i = currentIndex + 1; i <= targetIndex; i++) {
+        totalExpNeeded += expPerLevel[levels[i]];
+    }
+    totalExpNeeded -= progress;
+    if (totalExpNeeded < 0) totalExpNeeded = 0;
 
-  const expValues = Object.keys(dishesByExp).map(Number).sort((a, b) => b - a);
+    const reduction = 1 - (talentTimeReduction[talentLevel] || 0);
 
-  const [dish1] = dishesByExp[expValues[0]] || [];
-  const [dish2] = dishesByExp[expValues[1]] || [];
-  const [dish3] = dishesByExp[expValues[2]] || [];
-  const [dish4] = dishesByExp[expValues[3]] || [];
+    const dp = Array(totalExpNeeded + 1).fill(null);
+    dp[0] = { time: 0, combo: {} };
 
-  let bestCombo = null;
+    for (const exp of expValues) {
+        const dishInfo = dishesByExp[exp][0];
+        const cookTime = dishInfo.cookTimeHr;
 
-for (let g = Math.floor(totalExpNeeded / expValues[0]); g >= 0; g--) {
-  let rem1 = totalExpNeeded - g * expValues[0];
-  for (let f = Math.floor(rem1 / expValues[1]); f >= 0; f--) {
-    let rem2 = rem1 - f * expValues[1];
-    for (let w = Math.floor(rem2 / expValues[2]); w >= 0; w--) {
-      let rem3 = rem2 - w * expValues[2];
-      if (rem3 % expValues[3] === 0) {
-        let x = rem3 / expValues[3];
-        bestCombo = { g, f, w, x };
-        break;
+        for (let i = exp; i <= totalExpNeeded; i++) {
+            if (dp[i - exp] !== null) {
+                const newTime = dp[i - exp].time + cookTime;
+                if (dp[i] === null || newTime < dp[i].time) {
+                    const newCombo = { ...dp[i - exp].combo };
+                    newCombo[exp] = (newCombo[exp] || 0) + 1;
+                    dp[i] = { time: newTime, combo: newCombo };
+                }
+            }
+        }
+    }
+
+    let bestSolution = null;
+    for (let i = totalExpNeeded; i < dp.length; i++) {
+        if (dp[i] !== null) {
+            bestSolution = { exp: i, time: dp[i].time, combo: dp[i].combo };
+            break;
+        }
+    }
+
+    if (!bestSolution) {
+        resultDiv.textContent = "Could not find a combination of selected dishes to reach the target EXP.";
+        return;
+    }
+
+    const totalCookTime = bestSolution.time * reduction;
+    const realTime = totalCookTime / (delegatoLevel + 1);
+    const days = Math.floor(realTime / 24);
+    const hours = Math.round(realTime % 24);
+
+    const makeImageHTML = (dishes, count) => {
+      const seen = new Set();
+      let html = `${count} × `;
+      for (const dish of dishes) {
+        if (seen.has(dish.name)) continue;
+        seen.add(dish.name);
+        const imgPath = `images/${dish.name.toLowerCase().replace(/\s+/g, ' ')}.png`;
+        html += `<img src="${imgPath}" title="${dish.name}" style="max-width:40px;max-height:40px;margin:2px;vertical-align:middle;object-fit:contain;">`;
       }
+      return html + '<br>';
+    };
+
+    let output = `EXP needed: ${totalExpNeeded} (Achieved: ${bestSolution.exp})<br><br><b>Optimal Combo:</b><br>`;
+
+    for (const exp in bestSolution.combo) {
+        const count = bestSolution.combo[exp];
+        const dishGroup = dishesByExp[exp];
+        output += makeImageHTML(dishGroup, count);
     }
-    if (bestCombo) break;
-  }
-  if (bestCombo) break;
-}
+    output += `<br><b>Total time:</b> ${days} day(s) and ${hours} hour(s)`;
 
-  if (!bestCombo) {
-    resultDiv.textContent = "No efficient combination found.";
-    return;
-  }
-
-  const totalCookTime =
-    bestCombo.g * dish1.cookTimeHr * reduction +
-    bestCombo.f * dish2.cookTimeHr * reduction +
-    bestCombo.w * dish3.cookTimeHr * reduction +
-    bestCombo.x * dish4.cookTimeHr * reduction;
-  const realTime = totalCookTime / (delegatoLevel + 1);
-  const days = Math.floor(realTime / 24);
-  const hours = Math.round(realTime % 24);
-
-  const expToDishes = {};
-  for (const dish of dishes) {
-    if (!expToDishes[dish.exp]) expToDishes[dish.exp] = [];
-    expToDishes[dish.exp].push(dish);
-  }
-
-  const makeImageHTML = (dishes, count) => {
-    const seen = new Set();
-    let html = `${count} × `;
-    for (const dish of dishes) {
-      if (seen.has(dish.name)) continue;
-      seen.add(dish.name);
-            const imgPath = `images/${dish.name.toLowerCase().replace(/\s+/g, ' ')}.png`;
-      html += `<img src="${imgPath}" title="${dish.name}" style="max-width:40px;max-height:40px;margin:2px;vertical-align:middle;object-fit:contain;">`;
-    }
-    return html + '<br>';
-  };
-
-  let output = `EXP needed: ${totalExpNeeded}<br><br>Optimal Combo:<br>`;
-  output += makeImageHTML(expToDishes[expValues[0]], bestCombo.g);
-  output += makeImageHTML(expToDishes[expValues[1]], bestCombo.f);
-  output += makeImageHTML(expToDishes[expValues[2]], bestCombo.w);
-  output += makeImageHTML(expToDishes[expValues[3]], bestCombo.x);
-  output += `<br>Total time: ${days} day(s) and ${hours} hour(s)`;
-
-  resultDiv.innerHTML = output;
+    resultDiv.innerHTML = output;
 }
 
 
@@ -556,15 +627,103 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
 }
-  window.addEventListener('DOMContentLoaded', () => {
+
+
+function populateDishSelection() {
+    const container = document.getElementById('dishSelectionContainer');
+    container.innerHTML = '';
+   
+    const uniqueDishes = {};
+
+
+    dishes.forEach(dish => {
+        if (!uniqueDishes[dish.name]) {
+            uniqueDishes[dish.name] = dish;
+        }
+    });
+
+    for (const dishName in uniqueDishes) {
+        const dish = uniqueDishes[dishName];
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = dish.name;
+        checkbox.checked = true;
+        checkbox.style.marginTop = '1px'; 
+
+        const imgPath = `images/${dish.name.toLowerCase()}.png`;
+        const img = document.createElement('img');
+        img.src = imgPath;
+        img.title = `${dish.name} (+${dish.exp} EXP)`;
+        img.style.width = '50px';
+        img.style.height = '50px';
+        img.onerror = function() { this.style.display='none'; };
+
+        label.appendChild(img);
+        label.appendChild(checkbox);
+        container.appendChild(label);
+    }
+    const selectAllContainer = document.createElement('div');
+    selectAllContainer.className = 'select-all-container';
+    
+    const selectAllLabel = document.createElement('label');
+    selectAllLabel.htmlFor = 'selectAllCheckbox';
+    selectAllLabel.textContent = 'All';
+    
+    const selectAllCheckbox = document.createElement('input');
+    selectAllCheckbox.type = 'checkbox';
+    selectAllCheckbox.id = 'selectAllCheckbox';
+    selectAllCheckbox.checked = true;
+    
+    selectAllContainer.appendChild(selectAllLabel);
+    selectAllContainer.appendChild(selectAllCheckbox);
+    container.appendChild(selectAllContainer);
+}
+
+function setupCollapsible() {
+    const toggle = document.querySelector('.collapsible-toggle');
+    toggle.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+            this.textContent = 'Select Recipes ▼';
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            this.textContent = 'Hide ▲';
+        }
+    });
+}
+function setupSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const dishContainer = document.getElementById('dishSelectionContainer');
+
+    selectAllCheckbox.addEventListener('change', function() {
+        const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
+        dishCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    dishContainer.addEventListener('change', function(event) {
+        if (event.target.id !== 'selectAllCheckbox') {
+            const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
+            const totalDishes = dishCheckboxes.length;
+            const checkedDishes = Array.from(dishCheckboxes).filter(cb => cb.checked).length;
+
+            selectAllCheckbox.checked = totalDishes === checkedDishes;
+        }
+    });
+}
+window.addEventListener('DOMContentLoaded', () => {
     const now = new Date();
     now.setSeconds(0, 0);
-
     const pad = n => n.toString().padStart(2, '0');
-
     const localDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
     document.getElementById('startTime').value = localDateTime;
+
+    populateDishSelection();
+    setupCollapsible();
+    setupSelectAll();
   });
 </script>
 </body>
