@@ -396,7 +396,7 @@ function runCalculation() {
         dishesByExp[dish.exp].push(dish);
     });
     const expValues = Object.keys(dishesByExp).map(Number).sort((a, b) => b - a);
-
+    const maxExpFromOneDish = expValues.length > 0 ? expValues[0] : 0;
 
  
     let totalExpNeeded = 0;
@@ -408,14 +408,15 @@ function runCalculation() {
 
     const reduction = 1 - (talentTimeReduction[talentLevel] || 0);
 
-    const dp = Array(totalExpNeeded + 1).fill(null);
+    const dpArraySize = totalExpNeeded + maxExpFromOneDish;
+    const dp = Array(dpArraySize).fill(null);
     dp[0] = { time: 0, combo: {} };
 
     for (const exp of expValues) {
         const dishInfo = dishesByExp[exp][0];
         const cookTime = dishInfo.cookTimeHr;
 
-        for (let i = exp; i <= totalExpNeeded; i++) {
+        for (let i = exp; i < dpArraySize; i++) {
             if (dp[i - exp] !== null) {
                 const newTime = dp[i - exp].time + cookTime;
                 if (dp[i] === null || newTime < dp[i].time) {
@@ -428,7 +429,7 @@ function runCalculation() {
     }
 
     let bestSolution = null;
-    for (let i = totalExpNeeded; i < dp.length; i++) {
+    for (let i = totalExpNeeded; i < dpArraySize; i++) {
         if (dp[i] !== null) {
             bestSolution = { exp: i, time: dp[i].time, combo: dp[i].combo };
             break;
