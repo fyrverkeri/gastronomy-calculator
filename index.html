@@ -43,7 +43,7 @@
     display: flex;
     justify-content: flex-start;
     margin-bottom: 0;
-    width: 340px;
+    width: 399px;
     margin: 0 auto;
   }
 
@@ -54,7 +54,6 @@
     color: #fff8e1; 
     border-bottom: none;
     border-radius: 6px 6px 0 0;
-    font-family: 'Tahoma', sans-serif;
     font-size: 1rem;
     margin-right: 2px;
     transition: background-color 0.3s;
@@ -73,7 +72,7 @@
     background-color: rgba(252, 229, 205, 0.7);
     border-radius: 0px 16px 16px 16px;
     padding: 20px;
-    width: 300px;
+    width: 360px;
     margin: 0 auto 50px;
     box-shadow:
     0 0 5px #e7a45e,
@@ -88,12 +87,12 @@
     margin: 1rem 0 0.5rem;
   }
 
-  select, input {
+  select, input[type="number"], input[type="datetime-local"] {
     width: 80%;
     padding: 0.4rem;
     font-size: 1rem;
     margin-bottom: 0.5rem;
-    border-radius: 8px;
+    border-radius: 7px;
     background-color: #fff8e1;
     box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
   }
@@ -106,13 +105,12 @@
     margin-top: 1rem;
     padding: 0.6rem;
     font-size: 1rem;
-    width: 50%;
+    width: 40%;
     cursor: pointer;
     background-color: #b45f06;
     color: #fff8e1; 
     border: none;
-    border-radius: 10px;
-    font-family: 'Tahoma', sans-serif;
+    border-radius: 7px;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
@@ -131,7 +129,6 @@
     align-items: center;
     justify-content: center;
     margin-top: 0.25rem;
-    font-family: Tahoma, sans-serif;
     font-weight: bold;
   }
   .copy-image {
@@ -148,7 +145,7 @@
     margin-bottom: 1rem;
   }
   #startTime {
-    font-family: 'Tahoma', sans-serif;
+  font-family: 'Tahoma', sans-serif;
 }
 
 .collapsible-container {
@@ -164,7 +161,7 @@
   text-align: left;
   outline: none;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 7px;
   margin-top: 1rem;
   width: 50%;
   text-align: center;
@@ -174,7 +171,7 @@
   background-color: #783f04;
 }
 .collapsible-content {
-  padding: 0 15px;
+  padding: 0 8px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
@@ -214,120 +211,224 @@
 #dishSelectionContainer input[type="checkbox"] {
   box-shadow: none;
 }
+        #profitTab {
+            text-align: left;
+        }
+        #profitTab .profit-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        #profitTab .input-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        #profitTab .settings-panel, #profitTab .inventory-panel, #profitTab .results-panel {
+        }
+         #profitTab .inventory-panel {
+            text-align: left;
+        }
+        #profitTab .inventory-panel h2,
+        #profitTab .inventory-panel p {
+            text-align: center;
+        }
+        #profitTab h2 {
+            font-size: 1.5rem;
+            color: #783f04;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        #profitTab label {
+            margin-bottom: 0.25rem;
+            display: inline-block;
+        }
+        #profitTab select, #profitTab input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #profitTab .settings-panel .grid-2-col > div {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        #profitTab .settings-panel input,
+        #profitTab .settings-panel select {
+            width: 90%; 
+        }
+        #profitTab .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+        #profitTab hr {
+            border: none;
+            margin: 1rem auto;
+            width: 100%;
+        }
+        #profitTab .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        #profitTab .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        #profitTab .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        #profitTab #dish-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.25rem;
+        }
+        #profitTab .dish-input-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
+            border-radius: 8px;
+        }
+        #profitTab .dish-input-item img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            border-radius: 4px;
+            flex-shrink: 0; 
+        }
+        #profitTab .dish-input-item .quality-inputs {
+            display: flex;
+            gap: 2px; 
+            justify-content: center;
+        }
+        #profitTab .dish-input-item input[type="number"] {
+            width: 35px;
+            padding: 0.2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        #profitTab .dish-input-item input[type="checkbox"] {
+           width: 18px;
+           height: 18px;
+           flex-shrink: 0;
+        }
+        #profitTab .quality-legendary { border: 2px solid #e8b923; }
+        #profitTab .quality-epic { border: 2px solid #8b5cf6; }
+        #profitTab .quality-rare { border: 2px solid #3b82f6; }
+        #profitTab #calculate-profit-btn {
+            display: block;
+            width: 38%;
+            margin: 0.5rem auto 0;
+        }
+        #profitTab #result-container {
+            font-size: 0.9rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        #profitTab #result-container h3 {
+            font-size: 1.2rem;
+            color: #783f04;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        #profitTab #result-container ul {
+            list-style: none;
+            padding: 0;
+        }
+        #profitTab #result-container li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 5px;
+            background-color: rgba(252, 229, 205, 0.7);
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        #profitTab #result-container img {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+        #profitTab #result-container .total-gold {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: bold;
+            grid-column: 1 / -1;
+        }
+        .subtotal-text {
+            font-weight: bold;
+        }
+        .under-budget-text {
+            font-weight: bold;
+        }
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .grid-2-col > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .grid-2-col label {
+            margin-top: 0;
+        }
+        .grid-2-col select, .grid-2-col input {
+            width: 100%;
+        }
+        .current-exp-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        .current-exp-container label {
+            margin: 0;
+        }
+        .current-exp-container input {
+            width: 120px;
+            margin: 0;
+        }
 </style>
-</head>
-<body>
-<div class="credit">Created by Fyrverkeri</div>
-<h1 class="glow-text" style="text-align:center;">HPMA Gastronomy Calculator</h1>
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('expTab')">EXP</div>
-  <div class="tab" onclick="switchTab('researchTab')">Research</div>
-  <div class="tab" onclick="switchTab('harvestTab')">Commission Timer</div>
-</div>
-
-<div id="expTab" class="calculator-box">
-  <label for="currentLevel">Current Level</label>
-  <select id="currentLevel"></select>
-
-  <label for="targetLevel">Target Level</label>
-  <select id="targetLevel"></select>
-
-  <label for="progress">Progress into Current Level (EXP)</label>
-  <input type="number" id="progress" min="0" value="0" />
-
-  <div class="collapsible-container">
-    <button type="button" class="collapsible-toggle">Select Recipes ▼</button>
-    <div class="collapsible-content">
-      <div id="dishSelectionContainer">
-        </div>
-    </div>
-
-  <label for="talentLevel">Faster Than Flame Talent Level</label>
-  <select id="talentLevel">
-    <option value="0">0 (None)</option>
-    <option value="1">1 (5% faster, unlocks at Kitchen Hand I)</option>
-    <option value="2">2 (10% faster, unlocks at Apprentice cook I)</option>
-    <option value="3">3 (15% faster, unlocks at Sous Chef I)</option>
-    <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
-    <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
-  </select>
-
-  <label for="delegatoLevel">The Delegator Talent Level</label>
-  <select id="delegatoLevel">
-    <option value="0">0 (1 station)</option>
-    <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
-    <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
-  </select>
-  
-
-
-  </div>
-
-  <button onclick="runCalculation()">Calculate</button>
-  <div id="result"></div>
-</div>
-
-<div id="researchTab" class="calculator-box" style="display:none">
-  <label for="recipeSelect">Select Recipe</label>
-  <select id="recipeSelect">
-    <option value=""> </option>
-    <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
-    <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
-    <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
-    <option value="3">Braised Venison Stew (8 hr, 4 exp)</option>
-    <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
-    <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
-    <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
-    <option value="7">Wild Herb Tomahawk (12 hr, 6 exp)</option>
-    <option value="8">Simple Seared Scallops (8 hr, 4 exp)</option>
-    <option value="9">Hearthroast Chicken (4 hr, 2 exp)</option>
-  </select>
-  <div id="researchTasks" style="margin-top: 10px;"></div>
-  <label for="dishAmount">Commission Target</label>
-  <input type="number" id="dishAmount" min="1" value="1" />
-  <label for="timeTalentLevel">Faster Than Flame Talent Level</label>
-  <select id="timeTalentLevel">
-    <option value="0">0 (None)</option>
-    <option value="1">1 (5% faster, unlocks at Kitchen Hand I)</option>
-    <option value="2">2 (10% faster, unlocks at Apprentice cook I)</option>
-    <option value="3">3 (15% faster, unlocks at Sous Chef I)</option>
-    <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
-    <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
-  </select>
-  <label for="timeDelegatoLevel">The Delegator Talent Level</label>
-  <select id="timeDelegatoLevel">
-    <option value="0">0 (1 station)</option>
-    <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
-    <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
-  </select>
-  <button onclick="calculateTime()">Calculate</button>
-  <div id="timeResult"></div>
-</div>
-
-<div id="harvestTab" class="calculator-box" style="display:none">
-  <label for="startTime">Start Date and Time</label>
-  <input type="datetime-local" id="startTime" />
-  <label for="harvestTalent">Faster Than Flame Talent Level</label>
-  <select id="harvestTalent"></select>
-  <label>Commission Queue</label>
-  <div id="commissionSelector"></div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-  <label for="commissionHours" style="white-space: nowrap; line-height: 1.6;">Time Left:</label>
-  <input type="number" id="commissionHours" min="0" max="23" placeholder="Hours" style="width: 50px; height: 20px;" /> :
-  <input type="number" id="commissionMinutes" min="0" max="59" placeholder="Minutes" style="width: 50px; height: 20px;" />
-  </div>
-  <label>Reserved Queue</label>
-  <div id="reservedSelectors"></div>
-  <button id="bulkCopyButton" style="display:none; margin-top:10px;">Copy All</button>
-  <div id="harvestTotalExp" style="margin-top: 1em; font-weight: bold;"></div>
-  <button onclick="calculateHarvestTimes()">Calculate</button>
-</div>
-
 <script>
+
+const dishes = [
+    { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4, prices: { legendary: 288, epic: 208, rare: 160 } },
+    { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3, prices: { legendary: 216, epic: 156, rare: 120 } },
+    { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2, prices: { legendary: 130, epic: 94, rare: 72 } },
+    { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4, prices: { legendary: 317, epic: 229, rare: 176 } },
+    { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3, prices: { legendary: 194, epic: 140, rare: 108 } },
+    { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3, prices: { legendary: 238, epic: 172, rare: 132 } },
+    { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3, prices: { legendary: 216, epic: 156, rare: 120 } },
+    { name: "Wild Herb Tomahawk", cookTimeHr: 12, exp: 6, prices: { legendary: 475, epic: 343, rare: 264 } },
+    { name: "Simple Seared Scallops", cookTimeHr: 8, exp: 4, prices: { legendary: 317, epic: 229, rare: 176 } },
+    { name: "Hearthroast Chicken", cookTimeHr: 4, exp: 2, prices: { legendary: 144, epic: 104, rare: 80 } }
+];
 
 const levels = ["Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III", "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III", "Sous Chef I", "Sous Chef II", "Sous Chef III", "Head Chef I", "Head Chef II", "Head Chef III", "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III", "Master of Flavour I", "Master of Flavour II", "Master of Flavour III", "MAX"];
 const expPerLevel = {"Kitchen Hand I": 0, "Kitchen Hand II": 10, "Kitchen Hand III": 20, "Apprentice Cook I": 40, "Apprentice Cook II": 80, "Apprentice Cook III": 120, "Sous Chef I": 160, "Sous Chef II": 240, "Sous Chef III": 280, "Head Chef I": 320, "Head Chef II": 400, "Head Chef III": 500, "Culinary Virtuoso I": 600, "Culinary Virtuoso II": 700, "Culinary Virtuoso III": 800, "Master of Flavour I": 900, "Master of Flavour II": 1000, "Master of Flavour III": 1200, "MAX": 1400};
-const dishes = [ { name: "Gilded Shore Risotto", cookTimeHr: 8, exp: 4 }, { name: "Farmstead Feast Roast", cookTimeHr: 6, exp: 3 }, { name: "Woodland Mushroom Risotto", cookTimeHr: 4, exp: 2 }, { name: "Braised Venison Stew", cookTimeHr: 8, exp: 4 }, { name: "Hearty Custard Pie", cookTimeHr: 6, exp: 3 }, { name: "Paleleaf Meat Roll", cookTimeHr: 6, exp: 3 }, { name: "Saltbaked Shrimp", cookTimeHr: 6, exp: 3 }, { name: "Wild Herb Tomahawk", cookTimeHr: 12, exp: 6 }, { name: "Simple Seared Scallops", cookTimeHr: 8, exp: 4 }, { name: "Hearthroast Chicken", cookTimeHr: 4, exp: 2 }, ];
 const talentTimeReduction = { 0: 0, 1: 0.05, 2: 0.10, 3: 0.15, 4: 0.20, 5: 0.25 };
 const researchTaskMap = {
   0: ["🍳 60 any quality", "💰 30 Epic+", "🍳 20 Legendary", "🍳 100 in gauntlet (3+ recipes)"],
@@ -342,32 +443,37 @@ const researchTaskMap = {
   9: ["🍳 200 any quality", "Complete 70 gauntlets (2400+ score)", "💁 Flaunt * 1", "💰 10 Legendary"],
 };
 
-document.getElementById("recipeSelect").addEventListener("change", function () {
-  const selectedIndex = this.value;
-  const tasks = researchTaskMap[selectedIndex];
-
-  const taskContainer = document.getElementById("researchTasks");
-  if (tasks && tasks.length > 0) {
-    taskContainer.innerHTML = "<strong>Research Tasks:</strong><ul style='list-style-type: none; padding-left: 0;'>" + 
-  tasks.map(task => `<li>${task}</li>`).join("") + 
-  "</ul>";
-  } else {
-    taskContainer.innerHTML = "";
-  }
-});
-
-function populateSelect(id, options) {
-  const select = document.getElementById(id);
-  options.forEach(opt => {
-    const option = document.createElement('option');
-    option.value = opt;
-    option.textContent = opt;
-    select.appendChild(option);
-  });
+function getDishImagePath(dishName) {
+    const imageName = dishName.toLowerCase();
+    return `images/${imageName}.png`;
 }
 
-populateSelect('currentLevel', levels);
-populateSelect('targetLevel', levels);
+function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed'; 
+    textarea.style.opacity = 0;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+    document.body.removeChild(textarea);
+}
+
+function switchTab(tabId) {
+  const tabs = ["expTab", "researchTab", "profitTab", "harvestTab"];
+  tabs.forEach(t => {
+      const el = document.getElementById(t);
+      if (el) el.style.display = t === tabId ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  const activeTab = document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`);
+  if (activeTab) activeTab.classList.add('active');
+}
+
 
 function runCalculation() {
     const currentIndex = levels.indexOf(document.getElementById('currentLevel').value);
@@ -452,7 +558,7 @@ function runCalculation() {
       for (const dish of dishes) {
         if (seen.has(dish.name)) continue;
         seen.add(dish.name);
-        const imgPath = `images/${dish.name.toLowerCase().replace(/\s+/g, ' ')}.png`;
+        const imgPath = getDishImagePath(dish.name);
         html += `<img src="${imgPath}" title="${dish.name}" style="max-width:40px;max-height:40px;margin:2px;vertical-align:middle;object-fit:contain;">`;
       }
       return html + '<br>';
@@ -468,6 +574,26 @@ function runCalculation() {
     output += `<br><b>Total time:</b> ${days} day(s) and ${hours} hour(s)`;
 
     resultDiv.innerHTML = output;
+}
+
+function setupSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const dishContainer = document.getElementById('dishSelectionContainer');
+    if (!selectAllCheckbox) return;
+    selectAllCheckbox.addEventListener('change', function() {
+        const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
+        dishCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+    dishContainer.addEventListener('change', function(event) {
+        if (event.target.id !== 'selectAllCheckbox') {
+            const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
+            const totalDishes = dishCheckboxes.length;
+            const checkedDishes = Array.from(dishCheckboxes).filter(cb => cb.checked).length;
+            selectAllCheckbox.checked = totalDishes === checkedDishes;
+        }
+    });
 }
 
 
@@ -489,59 +615,7 @@ function calculateTime() {
     `Total EXP: ${totalExp}\n\n` +
     `Total time: ${days} day(s) and ${hours} hour(s)`;
 }
-function populateSelectWithText(id, options) {
-  const select = document.getElementById(id);
-  select.innerHTML = '';
-  options.forEach(opt => {
-    const option = document.createElement('option');
-    option.value = opt[0];
-    option.textContent = opt; 
-    select.appendChild(option);
-  });
-}
-const talentOptions = [
-  "0 (None)",
-  "1 (5% faster, unlocks at Kitchen Hand I)",
-  "2 (10% faster, unlocks at Apprentice cook I)",
-  "3 (15% faster, unlocks at Sous Chef I)",
-  "4 (20% faster, unlocks at Head Chef I)",
-  "5 (25% faster, unlocks at Culinary Virtuoso I)"
-];
 
-populateSelectWithText('harvestTalent', talentOptions);
-const commissionContainer = document.getElementById("commissionSelector");
-const reservedContainer = document.getElementById("reservedSelectors");
-
-for (let i = 0; i < 7; i++) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "dish-group";
-  const sel = document.createElement("select");
-  sel.className = "dishOption";
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = " ";
-  sel.appendChild(defaultOption);
-  dishes.forEach((dish, idx) => {
-    const option = document.createElement("option");
-    option.value = idx;
-    option.textContent = dish.name;
-    sel.appendChild(option);
-  });
-  sel.addEventListener("mousedown", function() {
-    this.selectedIndex = -1;
-  });
-  const result = document.createElement("div");
-  result.className = "timestamp";
-  result.style.display = "none";
-  wrapper.appendChild(sel);
-  wrapper.appendChild(result);
-
-  if (i === 0) {
-    commissionContainer.appendChild(wrapper);
-  } else {
-    reservedContainer.appendChild(wrapper);
-  }
-}
 
 function calculateHarvestTimes() {
   const baseTime = new Date(document.getElementById("startTime").value);
@@ -588,7 +662,7 @@ function calculateHarvestTimes() {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const formattedTime = `${months[readyTime.getMonth()]} ${readyTime.getDate().toString().padStart(2, '0')} ${readyTime.getHours().toString().padStart(2, '0')}:${readyTime.getMinutes().toString().padStart(2, '0')}`;
 
-    resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" title="Copy timestamp" onclick="navigator.clipboard.writeText('${copyContent}')" />`;
+    resultDiv.innerHTML = `${formattedTime} <img class="copy-image" src="https://cdn-icons-png.flaticon.com/512/60/60990.png" alt="Copy" title="Copy timestamp" onclick="copyToClipboard('${copyContent}')" />`;
     resultDiv.setAttribute("data-discord", copyContent);
     resultDiv.style.display = "flex";
   });
@@ -610,8 +684,7 @@ function calculateHarvestTimes() {
         .map(div => div.getAttribute("data-discord"))
         .filter(Boolean)
         .join("\n");
-
-      navigator.clipboard.writeText(allTimestamps);
+      copyToClipboard(allTimestamps);
     };
 
     expDiv.innerHTML = `Total EXP: ${totalExp} `;
@@ -622,27 +695,232 @@ function calculateHarvestTimes() {
   }
 }
 
-function switchTab(tabId) {
-  const tabs = ["expTab", "researchTab", "harvestTab"];
-  tabs.forEach(t => document.getElementById(t).style.display = t === tabId ? 'block' : 'none');
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+
+function saveProfitTabData() {
+    const data = {
+        weeklyBudget: document.getElementById('weekly-budget').value,
+        hvaBudget: document.getElementById('hva-budget').value,
+        shopLevel: document.getElementById('shop-level').value,
+        recipeRefinerLevel: document.getElementById('recipe-refiner-level').value,
+        recipesCompleted: document.getElementById('recipes-completed').value,
+        profitsModeLevel: document.getElementById('profits-mode-level').value,
+        researchTasksCompleted: document.getElementById('research-tasks-completed').value,
+        inventory: {}
+    };
+
+    dishes.forEach((dish, index) => {
+        data.inventory[`hva-check-${index}`] = document.getElementById(`hva-check-${index}`).checked;
+        data.inventory[`quantity-${index}-legendary`] = document.getElementById(`quantity-${index}-legendary`).value;
+        data.inventory[`quantity-${index}-epic`] = document.getElementById(`quantity-${index}-epic`).value;
+        data.inventory[`quantity-${index}-rare`] = document.getElementById(`quantity-${index}-rare`).value;
+    });
+
+    localStorage.setItem('hpmaProfitData', JSON.stringify(data));
 }
 
+function loadProfitTabData() {
+    const savedData = localStorage.getItem('hpmaProfitData');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        document.getElementById('weekly-budget').value = data.weeklyBudget || '';
+        document.getElementById('hva-budget').value = data.hvaBudget || '';
+        document.getElementById('shop-level').value = data.shopLevel || '2';
+        document.getElementById('recipe-refiner-level').value = data.recipeRefinerLevel || '0.10';
+        document.getElementById('recipes-completed').value = data.recipesCompleted || '';
+        document.getElementById('profits-mode-level').value = data.profitsModeLevel || '0.10';
+        document.getElementById('research-tasks-completed').value = data.researchTasksCompleted || '';
 
-function populateDishSelection() {
-    const container = document.getElementById('dishSelectionContainer');
-    container.innerHTML = '';
-   
-    const uniqueDishes = {};
+        if (data.inventory) {
+            dishes.forEach((dish, index) => {
+                const hvaCheck = document.getElementById(`hva-check-${index}`);
+                if (hvaCheck) {
+                    hvaCheck.checked = data.inventory[`hva-check-${index}`] === true;
+                }
+                document.getElementById(`quantity-${index}-legendary`).value = data.inventory[`quantity-${index}-legendary`] || '';
+                document.getElementById(`quantity-${index}-epic`).value = data.inventory[`quantity-${index}-epic`] || '';
+                document.getElementById(`quantity-${index}-rare`).value = data.inventory[`quantity-${index}-rare`] || '';
+            });
+        }
+    }
+}
 
+function initializeProfitTab() {
+    const dishInputsContainer = document.getElementById('dish-inputs');
+    if (!dishInputsContainer) return;
+    dishInputsContainer.innerHTML = '';
+    dishes.forEach((dish, index) => {
+        const dishElement = document.createElement('div');
+        dishElement.className = 'dish-input-item';
+        const imgPath = getDishImagePath(dish.name);
+        dishElement.innerHTML = `
+            <input type="checkbox" id="hva-check-${index}" title="Mark as weekly HVA dish">
+            <img src="${imgPath}" alt="${dish.name}" title="${dish.name}">
+            <div class="quality-inputs">
+                <input type="number" id="quantity-${index}-legendary" min="0" placeholder="0" title="Legendary" class="quality-legendary">
+                <input type="number" id="quantity-${index}-epic" min="0" placeholder="0" title="Epic" class="quality-epic">
+                <input type="number" id="quantity-${index}-rare" min="0" placeholder="0" title="Rare" class="quality-rare">
+            </div>
+        `;
+        dishInputsContainer.appendChild(dishElement);
+    });
 
-    dishes.forEach(dish => {
-        if (!uniqueDishes[dish.name]) {
-            uniqueDishes[dish.name] = dish;
+    const profitTabInputs = document.querySelectorAll('#profitTab input, #profitTab select');
+    profitTabInputs.forEach(input => {
+        input.addEventListener('change', saveProfitTabData);
+        input.addEventListener('input', saveProfitTabData);
+    });
+
+    loadProfitTabData();
+
+    const calculateBtn = document.getElementById('calculate-profit-btn');
+    if(calculateBtn) {
+        calculateBtn.addEventListener('click', calculateProfit);
+    }
+}
+
+function calculateProfit() {
+    const weeklyBudget = parseInt(document.getElementById('weekly-budget').value, 10) || 0;
+    const hvaBudget = parseInt(document.getElementById('hva-budget').value, 10) || 0;
+    const shopMultiplier = parseFloat(document.getElementById('shop-level').value);
+    const recipeRefinerCap = parseFloat(document.getElementById('recipe-refiner-level').value);
+    const recipesCompleted = parseInt(document.getElementById('recipes-completed').value, 10) || 0;
+    const profitsModeCap = parseFloat(document.getElementById('profits-mode-level').value);
+    const researchTasksCompleted = parseInt(document.getElementById('research-tasks-completed').value, 10) || 0;
+    const recipeRefinerBonus = Math.min(recipesCompleted * 0.01, recipeRefinerCap);
+    const profitsModeBonus = Math.min(researchTasksCompleted * 0.01, profitsModeCap);
+    
+    let allItems = [];
+    let itemUID = 0;
+
+    dishes.forEach((dish, index) => {
+        const isHVA = document.getElementById(`hva-check-${index}`).checked;
+        const quantities = {
+            legendary: parseInt(document.getElementById(`quantity-${index}-legendary`).value, 10) || 0,
+            epic: parseInt(document.getElementById(`quantity-${index}-epic`).value, 10) || 0,
+            rare: parseInt(document.getElementById(`quantity-${index}-rare`).value, 10) || 0,
+        };
+
+        for (const quality in quantities) {
+            const quantity = quantities[quality];
+            if (quantity > 0) {
+                const basePrice = dish.prices[quality];
+                const priceWithTalents = basePrice * (1 + recipeRefinerBonus) * (1 + profitsModeBonus);
+                for (let i = 0; i < quantity; i++) {
+                    allItems.push({
+                        uid: itemUID++,
+                        name: dish.name,
+                        quality: quality,
+                        isHVA: isHVA,
+                        hvaPrice: Math.floor(priceWithTalents * shopMultiplier),
+                        regularPrice: Math.floor(priceWithTalents)
+                    });
+                }
+            }
         }
     });
 
+    const hvaItemsForKnapsack = allItems
+        .filter(item => item.isHVA)
+        .map(item => ({ ...item, price: item.hvaPrice }));
+
+    const hvaResult = runKnapsack(hvaItemsForKnapsack, hvaBudget);
+    const usedHvaUIDs = new Set(hvaResult.items.map(item => item.uid));
+
+    const regularItemsForKnapsack = allItems
+        .filter(item => !usedHvaUIDs.has(item.uid))
+        .map(item => ({ ...item, price: item.regularPrice }));
+        
+    const weeklyResult = runKnapsack(regularItemsForKnapsack, weeklyBudget);
+
+    const resultContainer = document.getElementById('result-container');
+    let finalHTML = formatProfitResults('HVA Sales', hvaResult, hvaBudget);
+    finalHTML += formatProfitResults('Regular Sales', weeklyResult, weeklyBudget);
+    const totalGold = hvaResult.value + weeklyResult.value;
+    finalHTML += `<div class="total-gold">Total: ${totalGold.toFixed(0)}</div>`;
+    resultContainer.innerHTML = finalHTML;
+}
+
+const runKnapsack = (items, budget) => {
+    const intBudget = Math.floor(budget);
+    if (intBudget <= 0 || items.length === 0) return { value: 0, items: [] };
+
+    let dp = Array(intBudget + 1).fill(null).map(() => ({ value: 0, items: [] }));
+
+    for (const item of items) {
+        const itemPrice = item.price;
+        if (itemPrice <= 0) continue;
+
+        for (let j = intBudget; j >= itemPrice; j--) {
+            const valueWithItem = dp[j - itemPrice].value + itemPrice;
+            if (valueWithItem > dp[j].value) {
+                dp[j] = {
+                    value: valueWithItem,
+                    items: [...dp[j - itemPrice].items, item]
+                };
+            }
+        }
+    }
+    return dp[intBudget];
+};
+
+const formatProfitResults = (title, combination, budget) => {
+    if(combination.items.length === 0) return `<div><h3>${title}</h3><p>No items to sell for this budget.</p></div>`;
+    const summary = combination.items.reduce((acc, item) => {
+        const key = `${item.name}|${item.quality}`;
+        if (!acc[key]) acc[key] = { count: 0, price: item.price, name: item.name, quality: item.quality };
+        acc[key].count++;
+        return acc;
+    }, {});
+    const qualityClasses = { legendary: 'quality-legendary', epic: 'quality-epic', rare: 'quality-rare' };
+    let resultHTML = `<div><h3>${title}</h3><ul>`;
+    for (const key in summary) {
+        const { count, price, name, quality } = summary[key];
+        const borderClass = qualityClasses[quality] || '';
+        const imgPath = getDishImagePath(name);
+        resultHTML += `
+            <li>
+                <img src="${imgPath}" alt="${name}" class="${borderClass}">
+                <span><b>${count}x</b></span>
+                <span style="margin-left: auto;">${(price * count).toFixed(0)}</span>
+            </li>`;
+    }
+    const totalValue = combination.value;
+    resultHTML += `</ul>
+        <p>Subtotal: <span class="subtotal-text">${totalValue.toFixed(0)}</span></p>
+        <p>Remainder: <span class="under-budget-text">${(budget - totalValue).toFixed(0)}</span></p>
+    </div>`;
+    return resultHTML;
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+
+    const now = new Date();
+    now.setSeconds(0, 0);
+    const pad = n => n.toString().padStart(2, '0');
+    const localDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    document.getElementById('startTime').value = localDateTime;
+
+
+    const populateSelect = (id, options) => {
+      const select = document.getElementById(id);
+      options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        select.appendChild(option);
+      });
+    }
+    populateSelect('currentLevel', levels);
+    populateSelect('targetLevel', levels);
+
+
+    const expDishContainer = document.getElementById('dishSelectionContainer');
+    expDishContainer.innerHTML = '';
+    const uniqueDishes = {};
+    dishes.forEach(dish => {
+        if (!uniqueDishes[dish.name]) uniqueDishes[dish.name] = dish;
+    });
     for (const dishName in uniqueDishes) {
         const dish = uniqueDishes[dishName];
         const label = document.createElement('label');
@@ -650,83 +928,269 @@ function populateDishSelection() {
         checkbox.type = 'checkbox';
         checkbox.value = dish.name;
         checkbox.checked = true;
-        checkbox.style.marginTop = '1px'; 
-
-        const imgPath = `images/${dish.name.toLowerCase()}.png`;
+        checkbox.style.marginTop = '1px';
+        
+        const imgPath = getDishImagePath(dish.name);
         const img = document.createElement('img');
         img.src = imgPath;
         img.title = `${dish.name} (+${dish.exp} EXP)`;
-        img.style.width = '50px';
-        img.style.height = '50px';
-        img.onerror = function() { this.style.display='none'; };
 
         label.appendChild(img);
         label.appendChild(checkbox);
-        container.appendChild(label);
+        expDishContainer.appendChild(label);
     }
     const selectAllContainer = document.createElement('div');
     selectAllContainer.className = 'select-all-container';
+    selectAllContainer.innerHTML = `<label for="selectAllCheckbox">All</label><input type="checkbox" id="selectAllCheckbox" checked>`;
+    expDishContainer.appendChild(selectAllContainer);
     
-    const selectAllLabel = document.createElement('label');
-    selectAllLabel.htmlFor = 'selectAllCheckbox';
-    selectAllLabel.textContent = 'All';
-    
-    const selectAllCheckbox = document.createElement('input');
-    selectAllCheckbox.type = 'checkbox';
-    selectAllCheckbox.id = 'selectAllCheckbox';
-    selectAllCheckbox.checked = true;
-    
-    selectAllContainer.appendChild(selectAllLabel);
-    selectAllContainer.appendChild(selectAllCheckbox);
-    container.appendChild(selectAllContainer);
-}
 
-function setupCollapsible() {
     const toggle = document.querySelector('.collapsible-toggle');
-    toggle.addEventListener('click', function() {
-        const content = this.nextElementSibling;
-        if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-            this.textContent = 'Select Recipes ▼';
-        } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-            this.textContent = 'Hide ▲';
-        }
-    });
-}
-function setupSelectAll() {
-    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-    const dishContainer = document.getElementById('dishSelectionContainer');
-
-    selectAllCheckbox.addEventListener('change', function() {
-        const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
-        dishCheckboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+    if(toggle) {
+        toggle.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                this.textContent = 'Select Recipes ▼';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                this.textContent = 'Hide ▲';
+            }
         });
-    });
-
-    dishContainer.addEventListener('change', function(event) {
-        if (event.target.id !== 'selectAllCheckbox') {
-            const dishCheckboxes = dishContainer.querySelectorAll('input[type="checkbox"]:not(#selectAllCheckbox)');
-            const totalDishes = dishCheckboxes.length;
-            const checkedDishes = Array.from(dishCheckboxes).filter(cb => cb.checked).length;
-
-            selectAllCheckbox.checked = totalDishes === checkedDishes;
-        }
-    });
-}
-window.addEventListener('DOMContentLoaded', () => {
-    const now = new Date();
-    now.setSeconds(0, 0);
-    const pad = n => n.toString().padStart(2, '0');
-    const localDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    document.getElementById('startTime').value = localDateTime;
-
-    populateDishSelection();
-    setupCollapsible();
+    }
     setupSelectAll();
+
+
+    document.getElementById("recipeSelect").addEventListener("change", function () {
+      const selectedIndex = this.value;
+      const tasks = researchTaskMap[selectedIndex];
+      const taskContainer = document.getElementById("researchTasks");
+      if (tasks && tasks.length > 0) {
+        taskContainer.innerHTML = "Research Tasks:<ul style='list-style-type: none; padding-left: 0;'>" + 
+      tasks.map(task => `<li>${task}</li>`).join("") + 
+      "</ul>";
+      } else {
+        taskContainer.innerHTML = "";
+      }
+    });
+
+
+    const talentOptions = [ "0 (None)", "1 (5% faster)", "2 (10% faster)", "3 (15% faster)", "4 (20% faster)", "5 (25% faster)" ];
+    const harvestTalentSelect = document.getElementById('harvestTalent');
+    talentOptions.forEach((opt, index) => {
+        harvestTalentSelect.add(new Option(opt, index));
+    });
+
+    const commissionContainer = document.getElementById("commissionSelector");
+    const reservedContainer = document.getElementById("reservedSelectors");
+    for (let i = 0; i < 7; i++) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "dish-group";
+        const sel = document.createElement("select");
+        sel.className = "dishOption";
+        sel.innerHTML = '<option value=""> </option>';
+        dishes.forEach((dish, idx) => sel.add(new Option(dish.name, idx)));
+        sel.addEventListener("mousedown", function() { this.selectedIndex = -1; });
+        const result = document.createElement("div");
+        result.className = "timestamp";
+        result.style.display = "none";
+        wrapper.appendChild(sel);
+        wrapper.appendChild(result);
+        if (i === 0) commissionContainer.appendChild(wrapper);
+        else reservedContainer.appendChild(wrapper);
+    }
+
+
+    initializeProfitTab();
   });
 </script>
+</head>
+<body>
+<div class="credit">Created by Fyrverkeri</div>
+<h1 class="glow-text" style="text-align:center;">HPMA Gastronomy Calculator</h1>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('expTab')">EXP</div>
+  <div class="tab" onclick="switchTab('researchTab')">Research</div>
+  <div class="tab" onclick="switchTab('profitTab')">Profit</div>
+  <div class="tab" onclick="switchTab('harvestTab')">Commission Timer</div>
+</div>
+
+<div id="expTab" class="calculator-box">
+<div class="grid-2-col">
+<div>
+  <label for="currentLevel">Current Level</label>
+  <select id="currentLevel"></select>
+    </div>
+    <div>
+  <label for="targetLevel">Target Level</label>
+  <select id="targetLevel"></select>
+    </div>
+</div>
+  <div class="current-exp-container">
+    <label for="progress">Current EXP</label>
+    <input type="number" id="progress" min="0" value="0" />
+  </div>
+
+  <div class="collapsible-container">
+    <button type="button" class="collapsible-toggle">Select Recipes ▼</button>
+    <div class="collapsible-content">
+      <div id="dishSelectionContainer"></div>
+        </div>
+    </div>
+<div class="grid-2-col">
+    <div>
+  <label for="talentLevel">Faster Than Flame</label>
+  <select id="talentLevel">
+    <option value="0">0 (None)</option>
+    <option value="1">1 (5% faster)</option>
+    <option value="2">2 (10% faster)</option>
+    <option value="3">3 (15% faster)</option>
+    <option value="4">4 (20% faster)</option>
+    <option value="5">5 (25% faster)</option>
+  </select>
+     </div>
+    <div>
+  <label for="delegatoLevel">The Delegator</label>
+  <select id="delegatoLevel">
+    <option value="0">0 (1 station)</option>
+    <option value="1">1 (2 stations)</option>
+    <option value="2">2 (3 stations)</option>
+  </select>
+  </div>
+
+
+  </div>
+
+  <button onclick="runCalculation()">Calculate</button>
+  <div id="result"></div>
+</div>
+
+<div id="researchTab" class="calculator-box" style="display:none">
+  <label for="recipeSelect">Select Recipe</label>
+  <select id="recipeSelect">
+    <option value=""> </option>
+    <option value="0">Gilded Shore Risotto (8 hr, 4 exp)</option>
+    <option value="1">Farmstead Feast Roast (6 hr, 3 exp)</option>
+    <option value="2">Woodland Mushroom Risotto (4 hr, 2 exp)</option>
+    <option value="3">Braised Venison Stew (8 hr, 4 exp)</option>
+    <option value="4">Hearty Custard Pie (6 hr, 3 exp)</option>
+    <option value="5">Paleleaf Meat Roll (6 hr, 3 exp)</option>
+    <option value="6">Saltbaked Shrimp (6 hr, 3 exp)</option>
+    <option value="7">Wild Herb Tomahawk (12 hr, 6 exp)</option>
+    <option value="8">Simple Seared Scallops (8 hr, 4 exp)</option>
+    <option value="9">Hearthroast Chicken (4 hr, 2 exp)</option>
+  </select>
+  <div id="researchTasks" style="margin-top: 10px;"></div>
+  <label for="dishAmount">Commission Target</label>
+  <input type="number" id="dishAmount" min="1" value="1" />
+  <label for="timeTalentLevel">Faster Than Flame Talent Level</label>
+  <select id="timeTalentLevel">
+    <option value="0">0 (None)</option>
+    <option value="1">1 (5% faster, unlocks at Kitchen Hand I)</option>
+    <option value="2">2 (10% faster, unlocks at Apprentice cook I)</option>
+    <option value="3">3 (15% faster, unlocks at Sous Chef I)</option>
+    <option value="4">4 (20% faster, unlocks at Head Chef I)</option>
+    <option value="5">5 (25% faster, unlocks at Culinary Virtuoso I)</option>
+  </select>
+  <label for="timeDelegatoLevel">The Delegator Talent Level</label>
+  <select id="timeDelegatoLevel">
+    <option value="0">0 (1 station)</option>
+    <option value="1">1 (2 stations, unlocks at Sous Chef I)</option>
+    <option value="2">2 (3 stations, unlocks at Head Chef I)</option>
+  </select>
+  <button onclick="calculateTime()">Calculate</button>
+  <div id="timeResult"></div>
+</div>
+
+ <div id="profitTab" class="calculator-box" style="display:none;">
+        <div class="profit-grid">
+            <div class="input-column">
+                <div class="settings-panel">
+                    <div class="grid-2-col">
+                        <div>
+                            <label for="weekly-budget">Weekly Budget</label>
+                            <input type="number" id="weekly-budget">
+                        </div>
+                        <div>
+                            <label for="hva-budget">HVA Budget</label>
+                            <input type="number" id="hva-budget">
+                        </div>
+                    </div>
+                    <div>
+                         <label for="shop-level">Shop Level (HVA Bonus)</label>
+                         <select id="shop-level">
+                            <option value="2">Level 1-2 (100% Bonus)</option>
+                            <option value="3">Level 3-4 (200% Bonus)</option>
+                            <option value="4">Level 5-6 (300% Bonus)</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="grid-2-col">
+                        <div>
+                            <label for="recipe-refiner-level">Recipe Refiner</label>
+                            <select id="recipe-refiner-level">
+                                <option value="0.10">Level 1 (Max 10%)</option>
+                                <option value="0.20">Level 2 (Max 20%)</option>
+                                <option value="0.30">Level 3 (Max 30%)</option>
+                                <option value="0.40">Level 4 (Max 40%)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="recipes-completed">Recipes Researched</label>
+                            <input type="number" id="recipes-completed" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="grid-2-col">
+                        <div>
+                            <label for="profits-mode-level">Profits à la Mode</label>
+                            <select id="profits-mode-level">
+                                <option value="0.10">Level 1 (Max 10%)</option>
+                                <option value="0.20">Level 2 (Max 20%)</option>
+                                <option value="0.30">Level 3 (Max 30%)</option>
+                                <option value="0.40">Level 4 (Max 40%)</option>
+                                <option value="0.50">Level 5 (Max 50%)</option>
+                                <option value="0.60">Level 6 (Max 60%)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="research-tasks-completed">Tasks Completed</label>
+                            <input type="number" id="research-tasks-completed" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="inventory-panel">
+                    <h2>Inventory</h2>
+                    <p style="text-align: center; font-size: 0.9rem; margin-top: -0.75rem; margin-bottom: 1rem;">Mark weekly HVA dishes</p>
+                    <div id="dish-inputs"></div>
+                </div>
+                <div class="results-panel">
+                    <div id="result-container">
+                    </div>
+                </div>
+                 <button id="calculate-profit-btn">Calculate</button>
+            </div>
+        </div>
+    </div>
+
+<div id="harvestTab" class="calculator-box" style="display:none">
+  <label for="startTime">Start Date and Time</label>
+  <input type="datetime-local" id="startTime" />
+  <label for="harvestTalent">Faster Than Flame Talent Level</label>
+  <select id="harvestTalent"></select>
+  <label>Commission Queue</label>
+  <div id="commissionSelector"></div>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0.5em;">
+  <label for="commissionHours" style="white-space: nowrap; line-height: 1.6;">Time Left:</label>
+  <input type="number" id="commissionHours" min="0" max="23" placeholder="Hours" style="width: 50px; height: 20px;" /> :
+  <input type="number" id="commissionMinutes" min="0" max="59" placeholder="Minutes" style="width: 50px; height: 20px;" />
+  </div>
+  <label>Reserved Queue</label>
+  <div id="reservedSelectors"></div>
+  <button id="bulkCopyButton" style="display:none; margin-top:10px;">Copy All</button>
+  <div id="harvestTotalExp" style="margin-top: 1em; font-weight: bold;"></div>
+  <button onclick="calculateHarvestTimes()">Calculate</button>
+</div>
+
 </body>
 </html>
 
