@@ -425,6 +425,8 @@ const dishes = [
     { name: "Wild Herb Tomahawk", cookTimeHr: 12, exp: 6, prices: { legendary: 475, epic: 343, rare: 264 } },
     { name: "Simple Seared Scallops", cookTimeHr: 8, exp: 4, prices: { legendary: 317, epic: 229, rare: 176 } },
     { name: "Hearthroast Chicken", cookTimeHr: 4, exp: 2, prices: { legendary: 144, epic: 104, rare: 80 } }
+    { name: "Deepwater Ink Pasta", cookTimeHr: 10, exp: 5, prices: { legendary: 468, epic: 338, rare: 260 } }
+    { name: "Deepwater Ink Pasta", cookTimeHr: 8, exp: 4, prices: { legendary: 346, epic: 250, rare: 192 } }
 ];
 
 const levels = ["Kitchen Hand I", "Kitchen Hand II", "Kitchen Hand III", "Apprentice Cook I", "Apprentice Cook II", "Apprentice Cook III", "Sous Chef I", "Sous Chef II", "Sous Chef III", "Head Chef I", "Head Chef II", "Head Chef III", "Culinary Virtuoso I", "Culinary Virtuoso II", "Culinary Virtuoso III", "Master of Flavour I", "Master of Flavour II", "Master of Flavour III", "MAX"];
@@ -441,6 +443,8 @@ const researchTaskMap = {
   7: ["🍳 80 Epic+", "💰 20 Legendary", "🍳 150 in gauntlet (3+ recipes)", "🍽️ 1"],
   8: ["🍳 100 any quality", "💰 20 Legendary", "Complete 10 gauntlets (2400+ score)", "🎁 1"],
   9: ["🍳 200 any quality", "Complete 70 gauntlets (2400+ score)", "💁 Flaunt * 1", "💰 10 Legendary"],
+  10: ["🍳 50 Legendary", "🍳 200 in gauntlet (3+ recipes)", "🍳 5 in 1 gauntlet (3+ recipes)", "💰 100 any quality"],
+  11: ["🍳 150 any quality", "💰 40 any quality", "Complete 40 gauntlets (2400+ score)", "🍳5 in 1 gauntlet (3+ recipes) * 20"],
 };
 
 function getDishImagePath(dishName) {
@@ -1079,6 +1083,8 @@ window.addEventListener('DOMContentLoaded', () => {
     <option value="7">Wild Herb Tomahawk (12 hr, 6 exp)</option>
     <option value="8">Simple Seared Scallops (8 hr, 4 exp)</option>
     <option value="9">Hearthroast Chicken (4 hr, 2 exp)</option>
+    <option value="10">Deepwater Ink Pasta (10 hr, 5 exp)</option>
+    <option value="11">Golden Cream Pasta (8 hr, 4 exp)</option>
   </select>
   <div id="researchTasks" style="margin-top: 10px;"></div>
   <label for="dishAmount">Commission Target</label>
@@ -1193,6 +1199,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
-
-
